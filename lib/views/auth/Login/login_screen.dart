@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/views/auth/register_screen.dart';
+import 'package:mobile/views/auth/Login/widgets/textformfield_login.dart';
+import 'package:mobile/views/auth/register/register_screen.dart';
+import 'package:provider/provider.dart';
 
-import '../../utils/validators/email_validator.dart';
-import '../../utils/validators/password_validator.dart';
+import '../../../utils/validators/email_validator.dart';
+import '../../../utils/validators/password_validator.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
+import '../../home.dart';
 
-
-class LoginPage extends StatelessWidget{
+class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -13,6 +16,7 @@ class LoginPage extends StatelessWidget{
     );
   }
 }
+
 class BodyWidget extends StatefulWidget {
   const BodyWidget({super.key});
   @override
@@ -20,10 +24,12 @@ class BodyWidget extends StatefulWidget {
 }
 
 class _BodyWidgetState extends State<BodyWidget> {
-  bool _showPassword = false;// Xem mật khẩu
-  final TextEditingController _emailController = TextEditingController(); //Controller cho email
-  final TextEditingController _passwordController = TextEditingController();//Controller cho password
-  final _formKey = GlobalKey<FormState>();//Kiểm soát trạng thái của form
+  bool _showPassword = false; // Xem mật khẩu
+  final TextEditingController _emailController =
+      TextEditingController(); //Controller cho email
+  final TextEditingController _passwordController =
+      TextEditingController(); //Controller cho password
+  final _formKey = GlobalKey<FormState>(); //Kiểm soát trạng thái của form
   late String _email, _password;
   @override
   Widget build(BuildContext context) {
@@ -34,13 +40,11 @@ class _BodyWidgetState extends State<BodyWidget> {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height/2 - 60,
+                  height: MediaQuery.of(context).size.height / 2 - 60,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
                           image: AssetImage('assets/background.png'),
-                          fit: BoxFit.fill
-                      )
-                  ),
+                          fit: BoxFit.fill)),
                   child: Stack(
                     children: <Widget>[
                       Positioned(
@@ -50,9 +54,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                         child: Container(
                           decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage('assets/light-1.png')
-                              )
-                          ),
+                                  image: AssetImage('assets/light-1.png'))),
                         ),
                       ),
                       Positioned(
@@ -62,9 +64,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                         child: Container(
                           decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage('assets/light-2.png')
-                              )
-                          ),
+                                  image: AssetImage('assets/light-2.png'))),
                         ),
                       ),
                       Positioned(
@@ -75,9 +75,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                         child: Container(
                           decoration: const BoxDecoration(
                               image: DecorationImage(
-                                  image: AssetImage('assets/clock.png')
-                              )
-                          ),
+                                  image: AssetImage('assets/clock.png'))),
                         ),
                       ),
                       Positioned(
@@ -110,73 +108,72 @@ class _BodyWidgetState extends State<BodyWidget> {
                                 BoxShadow(
                                     color: Color.fromRGBO(143, 148, 251, .2),
                                     blurRadius: 20.0,
-                                    offset: Offset(0 ,10)
-                                )]
-                          ),
+                                    offset: Offset(0, 10))
+                              ]),
                           child: Form(
                             key: _formKey,
                             child: Column(
                               children: <Widget>[
-                                _buildTextField(
+                                buildTextFormField(
                                     hintText: "Email",
                                     iconData: Icons.person,
                                     controller: _emailController,
                                     validator: EmailValidator.validate,
-                                    onChanged: (value){
+                                    onChanged: (value) {
                                       setState(() {
                                         _email = value;
                                       });
-                                    }
-                                ),
-                                _buildTextField(
+                                    }),
+                                buildTextFormField(
                                   hintText: "Password",
                                   iconData: Icons.password_rounded,
                                   controller: _passwordController,
                                   validator: PasswordValidator.validate,
                                   obscureText: !_showPassword,
-                                  onChanged: (value){
+                                  onChanged: (value) {
                                     setState(() {
                                       _password = value;
                                     });
                                   },
                                   suffixIcon: IconButton(
                                     color: Colors.grey[600],
-                                    onPressed: (){
+                                    onPressed: () {
                                       setState(() {
                                         _showPassword = !_showPassword;
                                       });
                                     },
-                                    icon: _showPassword ? Icon(Icons.visibility) : Icon(Icons.visibility_off),
+                                    icon: _showPassword
+                                        ? Icon(Icons.visibility)
+                                        : Icon(Icons.visibility_off),
                                   ),
                                 )
                               ],
                             ),
-                          )
-                      ),
+                          )),
                       const SizedBox(
                         height: 10,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text(
-                              "Don\'t have an account ?",
+                          const Text("Don\'t have an account ?",
                               style: TextStyle(
-                                color:Color.fromRGBO(143, 148, 251, 1),
-                              )
-                          ),
+                                color: Color.fromRGBO(143, 148, 251, 1),
+                              )),
                           TextButton(
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Register()),
+                                MaterialPageRoute(
+                                    builder: (context) => HomeScreen()),
                               );
-                            }, child: const Text(
-                            "Register",
-                            style: TextStyle(
-                                color: Color.fromRGBO(92, 96, 239, 1.0),
-                                fontWeight: FontWeight.bold),
-                          ),
+                            },
+                            child: const Text(
+                              "Register",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(92, 96, 239, 1.0),
+                                  fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ],
                       ),
@@ -184,13 +181,15 @@ class _BodyWidgetState extends State<BodyWidget> {
                         height: 20,
                       ),
                       SizedBox(
-                        width: MediaQuery.of(context).size.width/3,
+                        width: MediaQuery.of(context).size.width / 3,
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromRGBO(143, 148, 251, 1),
                           ),
-                          onPressed: _login,
+                          onPressed: () {
+                            _login(context);
+                          },
                           child: const Center(
                             child: Text(
                               "Login",
@@ -209,46 +208,29 @@ class _BodyWidgetState extends State<BodyWidget> {
               ],
             ),
           ),
-        )
-    );
+        ));
   }
-  Widget _buildTextField({
-    required String hintText,
-    required IconData iconData,
-    Function (String)? onChanged,
-    Widget? suffixIcon,
-    bool obscureText = false,
-    required TextEditingController controller,
-    String? Function(String?) ? validator
-  }){
-    return Container(
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          children: [
-            Icon(
-              color: Colors.grey[600],
-              iconData,
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              child: TextFormField(
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: hintText,
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                ),
-                onChanged: onChanged,
-                obscureText: obscureText,
-                controller: controller,
-                validator: validator,
-              ),
-            ),
-            if(suffixIcon != null) suffixIcon
-          ],
-        )
-    );
+
+  void _login(BuildContext context) async {
+    if (_formKey.currentState!.validate()) {
+      final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+      final response = await authViewModel.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      if (response.success) {
+        // Handle successful login
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        // Handle login failure
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response.message ?? 'Đăng nhập thất bại')),
+        );
+      }
+    }
   }
-  void _login() async{}
 }
