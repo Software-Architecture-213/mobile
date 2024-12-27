@@ -165,7 +165,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => HomeScreen()),
+                                    builder: (context) => Register()),
                               );
                             },
                             child: const Text(

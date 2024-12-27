@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void showOtpDialog(BuildContext context) {
+import '../../viewmodels/auth_viewmodel.dart';
+
+void showOtpDialog(BuildContext context, String email) {
   final TextEditingController otpController = TextEditingController();
 
   showDialog(
@@ -16,9 +19,13 @@ void showOtpDialog(BuildContext context) {
         actions: <Widget>[
           TextButton(
             child: Text('Xác nhận'),
-            onPressed: () {
-              // Xử lý mã OTP ở đây
+            onPressed: () async {
+              final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+              final response = await authViewModel.validateOtp(email, otpController.text);
               Navigator.of(context).pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(response.message ?? 'OTP validation failed')),
+              );
             },
           ),
           TextButton(

@@ -37,6 +37,7 @@ class _registerState extends State<Register> {
         password: _passwordController.text,
         displayName: _displayNameController.text,
         phoneNumber: _phoneNumberController.text,
+        dateOfBirth: _selectedDate,
         role: _role,
         gender: _gender,
       );
@@ -45,8 +46,8 @@ class _registerState extends State<Register> {
       final response = await authViewModel.register(user);
 
       if (response.success) {
-        // Handle successful registration
-        showOtpDialog(context);
+        await authViewModel.generateOtp(_emailController.text);
+        showOtpDialog(context, _emailController.text);
       } else {
         // Handle registration failure
         ScaffoldMessenger.of(context).showSnackBar(
@@ -173,6 +174,8 @@ class _registerState extends State<Register> {
                               value: Role.user, child: Text(Role.user)),
                           DropdownMenuItem(
                               value: Role.admin, child: Text(Role.admin)),
+                          DropdownMenuItem(
+                              value: Role.branch, child: Text(Role.branch)),
                         ],
                         onChanged: (value) {
                           setState(() {

@@ -1,5 +1,5 @@
 class Gender {
-  static const String male = 'Male';
-  static const String female = 'Female';
-  static const String other = 'Other';
+  static const String male = 'MALE';
+  static const String female = 'FEMALE';
+  static const String other = 'OTHER';
 }
