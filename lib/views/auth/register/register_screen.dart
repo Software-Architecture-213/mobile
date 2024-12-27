@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile/views/auth/enums/gender.dart';
 import 'package:mobile/views/auth/enums/role.dart';
 import 'package:mobile/views/auth/otp_dialog.dart';
@@ -10,6 +11,7 @@ import '../../../utils/validators/email_validator.dart';
 import '../../../utils/validators/password_validator.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 import '../Login/login_screen.dart';
+import '../Login/widgets/dropdown.dart';
 
 class Register extends StatefulWidget {
   const Register({super.key});
@@ -36,7 +38,7 @@ class _registerState extends State<Register> {
         email: _emailController.text,
         password: _passwordController.text,
         displayName: _displayNameController.text,
-        phoneNumber: _phoneNumberController.text,
+        phoneNumber: getFullPhoneNumber(),
         dateOfBirth: _selectedDate,
         role: _role,
         gender: _gender,
@@ -46,14 +48,36 @@ class _registerState extends State<Register> {
       final response = await authViewModel.register(user);
 
       if (response.success) {
-        await authViewModel.generateOtp(_emailController.text);
-        showOtpDialog(context, _emailController.text);
+        _generateOtp(context, authViewModel);
       } else {
         // Handle registration failure
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(response.message ?? 'Đăng ký thất bại')),
         );
       }
+    }
+  }
+  // Hàm lấy số điện thoại đầy đủ (thêm +84 vào đầu)
+  String getFullPhoneNumber() {
+    final rawNumber = _phoneNumberController.text.trim();
+    return '+84$rawNumber'; // Tự động thêm +84
+  }
+  // Hàm kiểm tra số điện thoại
+  String? validatePhoneNumber(String value) {
+    final regex = RegExp(r'^\d{9}$'); // Số điện thoại phải có 9 chữ số không kể dấu +84
+    if (!regex.hasMatch(value)) {
+      return 'Số điện thoại phải có đúng 9 chữ số.';
+    }
+    return null;
+  }
+  void _generateOtp(BuildContext context, AuthViewModel authViewModel) async {
+    final response = await authViewModel.generateOtp(_emailController.text);
+    if (response.success) {
+      showOtpDialog(context, _emailController.text);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(response.message ?? 'OTP generation failed')),
+      );
     }
   }
   void _selectDate(BuildContext context) async {
@@ -72,6 +96,7 @@ class _registerState extends State<Register> {
   }
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -148,15 +173,6 @@ class _registerState extends State<Register> {
                       ),
                       const SizedBox(height: 15),
                       buildTextFormField(
-                        labelText: "Phone Number",
-                        iconData: Icons.phone,
-                        controller: _phoneNumberController,
-                        validator: (value) => value!.isEmpty
-                            ? 'Please enter your phone number'
-                            : null,
-                      ),
-                      const SizedBox(height: 15),
-                      buildTextFormField(
                         labelText: "Date of Birth",
                         iconData: Icons.calendar_today,
                         controller: _dateOfBirthController,
@@ -167,16 +183,34 @@ class _registerState extends State<Register> {
                         readOnly: true,
                       ),
                       const SizedBox(height: 15),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(labelText: "Role",contentPadding: EdgeInsets.zero),
-                        items: [
-                          DropdownMenuItem(
-                              value: Role.user, child: Text(Role.user)),
-                          DropdownMenuItem(
-                              value: Role.admin, child: Text(Role.admin)),
-                          DropdownMenuItem(
-                              value: Role.branch, child: Text(Role.branch)),
-                        ],
+                      Container(
+                        padding: EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          controller: _phoneNumberController,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly, // Chỉ cho phép số
+                          ],
+                          decoration: InputDecoration(
+                            labelText: "Phone Number",
+                            contentPadding: EdgeInsets.zero,
+                            prefixText: '+84 ',
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter your phone number';
+                            }
+                            return validatePhoneNumber(value);
+                          },
+                        ),
+                      ),
+
+                      const SizedBox(height: 15),
+                      EnumDropdownButtonFormField<String>(
+                        labelText: "Role",
+                        value: _role,
+                        items: [Role.user, Role.admin, Role.branch],
                         onChanged: (value) {
                           setState(() {
                             _role = value!;
@@ -184,17 +218,10 @@ class _registerState extends State<Register> {
                         },
                       ),
                       const SizedBox(height: 15),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(labelText: "Gender",contentPadding: EdgeInsets.zero),
-                        items: [
-                          DropdownMenuItem(
-                              value: Gender.male, child: Text(Gender.male)),
-                          DropdownMenuItem(
-                              value: Gender.female,
-                              child: Text(Gender.female)),
-                          DropdownMenuItem(
-                              value: Gender.other, child: Text(Gender.other)),
-                        ],
+                      EnumDropdownButtonFormField<String>(
+                        labelText: "Gender",
+                        value: _gender,
+                        items: [Gender.male, Gender.female, Gender.other],
                         onChanged: (value) {
                           setState(() {
                             _gender = value!;
@@ -214,7 +241,12 @@ class _registerState extends State<Register> {
                             onPressed: () {
                               _createAccount(context);
                             },
-                            child: const Text("Create Account",
+                            child: authViewModel.isLoadingRegister
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                :
+                            const Text("Create Account",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 17,

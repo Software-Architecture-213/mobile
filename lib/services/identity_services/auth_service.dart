@@ -90,7 +90,7 @@ class AuthService{
   Future<ApiResponse> generateOtp(String email) async {
     try {
       final response = await dio.post(
-        '/otp/generate',
+        '/auth/otp/generate',
         data: {
           'email': email,
         },
@@ -128,7 +128,7 @@ class AuthService{
   Future<ApiResponse> validateOtp(String email, String otpCode) async {
     try {
       final response = await dio.post(
-        '/otp/validate',
+        '/auth/otp/validate',
         data: {
           'email': email,
           'otpCode': otpCode,

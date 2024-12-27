@@ -5,30 +5,40 @@ import '../models/user.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
-
+  bool isLoadingRegister = false;
+  bool isLoadingLogin = false;
+  bool isLoadingGenerateOtp = false;
+  bool isLoadingValidateOtp = false;
   Future<ApiResponse> register(User user) async {
+    isLoadingRegister = true;
     final response = await _authService.register(user);
-    // Notify listeners if needed
+    isLoadingRegister = false;
     notifyListeners();
     return response;
   }
+
   Future<ApiResponse> login(String email, String password) async {
+    isLoadingLogin = true;
     final response = await _authService.login(email, password);
-    // Notify listeners if needed
+    isLoadingLogin = false;
     notifyListeners();
     return response;
   }
+
   Future<ApiResponse> generateOtp(String email) async {
+    isLoadingGenerateOtp = true;
     final response = await _authService.generateOtp(email);
-    // Notify listeners if needed
+    isLoadingGenerateOtp = false;
     notifyListeners();
     return response;
   }
 
   Future<ApiResponse> validateOtp(String email, String otpCode) async {
+    isLoadingValidateOtp = true;
     final response = await _authService.validateOtp(email, otpCode);
-    // Notify listeners if needed
+    isLoadingValidateOtp = false;
     notifyListeners();
     return response;
   }
+
 }
