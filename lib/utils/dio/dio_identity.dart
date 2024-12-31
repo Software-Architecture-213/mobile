@@ -1,16 +1,15 @@
 import 'package:dio/dio.dart';
 
-import 'interceptor/auth_interceptor.dart';
 
-class DioClient {
-  static final DioClient _instance = DioClient._internal();
+class DioIdentity {
+  static final DioIdentity _instance = DioIdentity._internal();
   late Dio dio;
 
-  factory DioClient() {
+  factory DioIdentity() {
     return _instance;
   }
 
-  DioClient._internal() {
+  DioIdentity._internal() {
     dio = Dio(
       BaseOptions(
         baseUrl: 'http://10.0.2.2:80/api/identity',
@@ -29,6 +28,5 @@ class DioClient {
       error: true,
     ));
 
-    //dio.interceptors.add(AuthInterceptor(dio: dio));
   }
 }

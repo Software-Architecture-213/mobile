@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:mobile/views/auth/enums/gender.dart';
-import 'package:mobile/views/auth/enums/role.dart';
-import 'package:mobile/views/auth/otp_dialog.dart';
+import 'package:mobile/views/auth/otp/otp_dialog.dart';
 import 'package:mobile/views/auth/register/widgets/textformfield_register.dart';
 import 'package:provider/provider.dart';
+import '../../../constant/enums/gender.dart';
+import '../../../constant/enums/role.dart';
 import '../../../models/user.dart';
 import '../../../utils/validators/confirm_password_validator.dart';
 import '../../../utils/validators/email_validator.dart';

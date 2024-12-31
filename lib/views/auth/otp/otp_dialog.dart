@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../viewmodels/auth_viewmodel.dart';
-import 'Login/login_screen.dart';
+import '../../../viewmodels/auth_viewmodel.dart';
+import '../Login/login_screen.dart';
 
 void showOtpDialog(BuildContext context, String email) {
   final TextEditingController otpController = TextEditingController();
