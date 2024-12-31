@@ -1,11 +1,11 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:mobile/utils/Dio/dio_client.dart';
 import '../../models/response/api_response.dart';
 import '../../models/user.dart';
+import '../../utils/dio/dio_identity.dart';
 
 class AuthService{
-  final dio = DioClient().dio;
+  final dio = DioIdentity().dio;
   Future<ApiResponse> register(User user) async {
     try {
       final response = await dio.post(

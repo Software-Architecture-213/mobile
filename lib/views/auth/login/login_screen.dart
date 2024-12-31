@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../utils/validators/email_validator.dart';
 import '../../../utils/validators/password_validator.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
-import '../../home.dart';
+import '../../home/home_screen.dart';
 
 class LoginPage extends StatelessWidget {
   @override
