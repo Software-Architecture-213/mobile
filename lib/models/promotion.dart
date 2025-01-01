@@ -1,3 +1,5 @@
+import 'package:mobile/models/voucher.dart';
+
 class Promotion {
   String? id; // Promotion ID
   String name; // Tên khuyến mãi
@@ -6,13 +8,13 @@ class Promotion {
   DateTime startDate; // Thời gian bắt đầu
   DateTime endDate; // Thời gian kết thúc
   String brandId; // Liên kết với thương hiệu
-  double budget; // Ngân sách dành cho khuyến mãi
+  double? budget; // Ngân sách dành cho khuyến mãi
   double? remainingBudget; // Ngân sách còn lại
   String status; // Trạng thái khuyến mãi
-  List<String>? vouchers; // Danh sách voucher trong khuyến mãi
+  List<Voucher>? vouchers; // Danh sách voucher trong khuyến mãi
   List<String>? games; // Danh sách trò chơi tham gia khuyến mãi
   DateTime createdAt; // Ngày tạo khuyến mãi
-  DateTime updatedAt; // Ngày cập nhật khuyến mãi
+  DateTime? updatedAt; // Ngày cập nhật khuyến mãi
 
   Promotion({
     this.id,
@@ -22,38 +24,39 @@ class Promotion {
     required this.startDate,
     required this.endDate,
     required this.brandId,
-    this.budget = 0,
+    this.budget ,
     this.remainingBudget,
-    this.status = 'active',
+    required this.status ,
     this.vouchers,
     this.games,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+    required this.createdAt,
+    this.updatedAt,
+  })  ;
 
   factory Promotion.fromJson(Map<String, dynamic> json) {
     return Promotion(
-      id: json['_id'],
-      name: json['name'],
-      description: json['description'],
-      imageUrl: json['imageUrl'],
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      imageUrl: json['imageUrl'] ,
       startDate: DateTime.parse(json['startDate']),
       endDate: DateTime.parse(json['endDate']),
-      brandId: json['brandId'],
+      brandId: json['brandId'] ?? '',
       budget: json['budget']?.toDouble() ?? 0,
-      remainingBudget: json['remainingBudget']?.toDouble(),
+      remainingBudget: json['remainingBudget']?.toDouble() ?? 0,
       status: json['status'] ?? 'active',
-      vouchers: json['vouchers'] != null ? List<String>.from(json['vouchers']) : null,
+      vouchers: json['vouchers'] != null
+          ? List<Voucher>.from(json['vouchers'].map((v) => Voucher.fromJson(v)))
+          : null,
       games: json['games'] != null ? List<String>.from(json['games']) : null,
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      createdAt: DateTime.parse(json['createAt']),
+      updatedAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      '_id': id,
+      'id': id,
       'name': name,
       'description': description,
       'imageUrl': imageUrl,
@@ -63,10 +66,10 @@ class Promotion {
       'budget': budget,
       'remainingBudget': remainingBudget,
       'status': status,
-      'vouchers': vouchers,
+      'vouchers': vouchers?.map((v) => v.toJson()).toList(),
       'games': games,
       'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

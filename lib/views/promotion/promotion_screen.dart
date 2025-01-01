@@ -9,7 +9,12 @@ class PromotionPage extends StatelessWidget {
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Icon(Icons.search, color: Colors.black),
+          child: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+              icon: Icon(Icons.arrow_back_outlined),
+              color: Colors.black),
         ),
         title: TextField(
           decoration: InputDecoration(
@@ -17,7 +22,7 @@ class PromotionPage extends StatelessWidget {
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(26),
               borderSide: BorderSide.none,
             ),
           ),
@@ -94,7 +99,8 @@ class PromotionPage extends StatelessWidget {
             SizedBox(height: 16),
             // Deals
             Container(
-              padding: EdgeInsets.all(16),
+              width: double.infinity,
+              padding: EdgeInsets.all(8),
               color: Colors.pink[50],
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,24 +108,27 @@ class PromotionPage extends StatelessWidget {
                   Text(
                     "Chớt nắm thêm nghìn deal ngon!",
                     style: TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: 8),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         dealCard(
+                          context,
                           "assets/kfc.jpg",
                             "Cà phê muối Chú Long", "Ưu đãi 30%", "Thu thập"),
-                        dealCard("assets/kfc.jpg","Tiệm bánh Liha", "Giảm 30%", "Thu thập"),
+                        dealCard(context,"assets/kfc.jpg","Tiệm bánh Liha", "Giảm 30%", "Thu thập"),
                         dealCard(
+                          context,
                             "assets/kfc.jpg",
                             "Cà phê muối Chú Long", "Ưu đãi 30%", "Thu thập"),
                         dealCard(
+                          context,
                             "assets/kfc.jpg",
                             "Cà phê muối Chú Long", "Ưu đãi 30%", "Thu thập"),
                       ],
@@ -151,44 +160,57 @@ class PromotionPage extends StatelessWidget {
     );
   }
 
-  Widget dealCard(String imageUrl, String title, String subtitle, String buttonText) {
-    return Container(
-      width: 150,
-      height: 250,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget dealCard(BuildContext context,String imageUrl, String title, String subtitle, String buttonText) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Container(
+        width: MediaQuery.of(context).size.width *0.9,
+        child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-              child: Image.asset(
-                imageUrl,
-                height: 100,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text(subtitle),
-                  SizedBox(height: 8),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(buttonText),
-                  ),
-                ],
+              child: ClipRRect(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                child: Image.asset(
+                  imageUrl,
+                  height: 100,
+                  width: 100,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(subtitle),
+                    SizedBox(height: 8),
+
+                  ],
+                ),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.orangeAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              onPressed: () {},
+              child: Text(buttonText,style: TextStyle(color: Colors.black),),
+            ),
+            SizedBox(
+              width: 8,
+            )
           ],
         ),
       ),
