@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/views/favourite_promotion/favourite_screen.dart';
 import 'package:mobile/views/home/widgets/bottom_navigation_custom.dart';
 import 'package:mobile/views/home/widgets/campaign_card.dart';
 import 'package:mobile/views/home/widgets/invite_card.dart';
 import 'package:mobile/views/home/widgets/section_header.dart';
 import 'package:mobile/views/profile/profile_screen.dart';
+import 'package:mobile/views/voucher/voucher_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../viewmodels/brand_viewmodel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,12 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     Provider.of<BrandViewModel>(context, listen: false).getAllBrands();
     Provider.of<BrandViewModel>(context, listen: false).getAllPromotions();
+    Provider.of<BrandViewModel>(context, listen: false).getAllVouchers();
   }
   Widget build(BuildContext context) {
     int selectedBottomNavigation = 0;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.orange,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -104,7 +106,61 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  buildSectionHeader(context,'Brands', 'See all',1),
+                  buildSectionHeader(context,'Promotions', 'See all', 'promotion'),
+                  SizedBox(height: 5),
+                  Consumer<BrandViewModel>(
+                    builder: (context, brandViewModel, child) {
+                      if (brandViewModel.isLoadingPromotion) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: brandViewModel.promotions.map((promotion) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: buildCampaignCard(
+                                promotion.name,
+                                promotion.description ?? '',
+                                promotion.status,
+                                promotion.imageUrl!,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  buildInviteCard(),
+                  SizedBox(height: 10),
+                  buildSectionHeader(context,'Vouchers', 'See all', 'voucher'),
+                  SizedBox(height: 10),
+                  Consumer<BrandViewModel>(
+                    builder: (context, brandViewModel, child) {
+                      if (brandViewModel.isLoadingVoucher) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: brandViewModel.vouchers.map((voucher) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: buildCampaignCard(
+                                voucher.code,
+                                voucher.description ?? '',
+                                voucher.status,
+                                voucher.imageUrl!,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  buildSectionHeader(context,'Brands', 'See all', 'brand'),
                   SizedBox(height: 10),
                   Consumer<BrandViewModel>(
                     builder: (context, brandViewModel, child) {
@@ -122,33 +178,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 brand.field,
                                 brand.status,
                                 brand.imageUrl!,
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(height: 20),
-                  buildInviteCard(),
-                  buildSectionHeader(context,'Promotions', 'See all', 2),
-                  SizedBox(height: 10),
-                  Consumer<BrandViewModel>(
-                    builder: (context, brandViewModel, child) {
-                      if (brandViewModel.isLoadingPromotion) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: brandViewModel.promotions.map((promotion) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: buildCampaignCard(
-                                promotion.name,
-                                promotion.description ?? '',
-                                promotion.status,
-                                promotion.imageUrl!,
                               ),
                             );
                           }).toList(),
@@ -177,7 +206,21 @@ class _HomeScreenState extends State<HomeScreen> {
         MaterialPageRoute(
             builder: (context) => HomeScreen()),
       );
-    } else if(index == 3) {
+    }else if(index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VoucherScreen()),
+      );
+    }
+    else if(index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FavouriteScreen()),
+      );
+    }
+    else if(index == 3) {
       Navigator.push(
         context,
         MaterialPageRoute(

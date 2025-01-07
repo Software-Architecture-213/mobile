@@ -27,7 +27,11 @@ Widget buildCampaignCard(String title, String field, String status, String image
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
+          child: Text(
+              title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(fontWeight: FontWeight.bold)),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -35,7 +39,11 @@ Widget buildCampaignCard(String title, String field, String status, String image
             children: [
               Icon(Icons.category, size: 14, color: Colors.grey),
               SizedBox(width: 4),
-              Expanded(child: Text(field, style: TextStyle(fontSize: 12, color: Colors.grey))),
+              Expanded(child: Text(
+                  field,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12, color: Colors.grey))),
             ],
           ),
         ),
@@ -45,7 +53,13 @@ Widget buildCampaignCard(String title, String field, String status, String image
             children: [
               Icon(Icons.access_time, size: 14, color: Colors.red),
               SizedBox(width: 4),
-              Text(status, style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Text(
+                  status,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 12, color: Colors.grey)),
+              Spacer(),
+              Icon(Icons.favorite, size: 14, color: Colors.red),
             ],
           ),
         ),

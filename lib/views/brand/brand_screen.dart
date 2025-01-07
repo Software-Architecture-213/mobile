@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/views/branch/widgets/campaign_item.dart';
+import 'package:mobile/views/brand/widgets/campaign_item.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/brand_viewmodel.dart';
 

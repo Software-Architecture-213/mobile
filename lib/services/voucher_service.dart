@@ -17,5 +17,17 @@ class VoucherService{
       throw Exception('Failed to load vouchers: $e');
     }
   }
+  Future<Voucher> getVoucherById(String id) async {
+    try {
+      final response = await dio.get('/vouchers/$id');
+      if (response.statusCode == 200) {
+        return Voucher.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load voucher');
+      }
+    } catch (e) {
+      throw Exception('Failed to load voucher: $e');
+    }
+  }
 
 }

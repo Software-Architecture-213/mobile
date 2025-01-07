@@ -4,9 +4,9 @@ Widget buildInviteCard() {
   return Container(
     height: 170,
     width: double.infinity,
-    padding: EdgeInsets.all(16),
+    padding: EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: Colors.orange[100],
+      color: Colors.orangeAccent[100],
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(
@@ -29,6 +29,7 @@ Widget buildInviteCard() {
         ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Invite your friends', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 4),
@@ -36,9 +37,9 @@ Widget buildInviteCard() {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {},
-              child: Text('INVITE', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+              child: Text('INVITE', style: TextStyle(color: Colors.black54,fontWeight: FontWeight.bold)),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.orange,
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
               ),
             ),

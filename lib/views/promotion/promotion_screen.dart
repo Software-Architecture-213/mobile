@@ -1,34 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/viewmodels/brand_viewmodel.dart';
+import 'package:provider/provider.dart';
+import '../constant/deal_card.dart';
+import '../constant/menu_item.dart';
 
 class PromotionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink[50],
+        backgroundColor: Color(0xFFF1DFC7),
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(bottom: 8.0,right: 8,left: 8),
           child: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-              icon: Icon(Icons.arrow_back_outlined),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_outlined,size: 26,),
               color: Colors.black),
         ),
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: "Tìm kiếm ưu đãi...",
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(26),
-              borderSide: BorderSide.none,
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Tìm kiếm ưu đãi...",
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.only(left: 16),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(26),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
         ),
         actions: [
-          Icon(Icons.notifications, color: Colors.black),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Icon(Icons.notifications, color: Colors.black,size: 26,),
+          ),
           SizedBox(width: 16),
         ],
       ),
@@ -38,7 +49,7 @@ class PromotionPage extends StatelessWidget {
             // Banner
             Container(
               padding: EdgeInsets.all(16),
-              color: Colors.pink[50],
+              color:Color(0xFFF1DFC7),
               child: Row(
                 children: [
                   Expanded(
@@ -101,7 +112,7 @@ class PromotionPage extends StatelessWidget {
             Container(
               width: double.infinity,
               padding: EdgeInsets.all(8),
-              color: Colors.pink[50],
+              color: Color(0xFFF1DFC7),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -113,26 +124,30 @@ class PromotionPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8),
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        dealCard(
-                          context,
-                          "assets/kfc.jpg",
-                            "Cà phê muối Chú Long", "Ưu đãi 30%", "Thu thập"),
-                        dealCard(context,"assets/kfc.jpg","Tiệm bánh Liha", "Giảm 30%", "Thu thập"),
-                        dealCard(
-                          context,
-                            "assets/kfc.jpg",
-                            "Cà phê muối Chú Long", "Ưu đãi 30%", "Thu thập"),
-                        dealCard(
-                          context,
-                            "assets/kfc.jpg",
-                            "Cà phê muối Chú Long", "Ưu đãi 30%", "Thu thập"),
-                      ],
-                    ),
+                  Consumer<BrandViewModel>(
+                      builder: (context, brandViewModel, child) {
+                      if (brandViewModel.isLoadingPromotion) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: brandViewModel.promotions.map((promotion) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: dealCard(
+                                context,
+                                promotion.imageUrl!,
+                                promotion.name,
+                                promotion.description ?? '',
+                                "Thu thập",
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    }
                   )
                 ],
               ),
@@ -143,78 +158,5 @@ class PromotionPage extends StatelessWidget {
     );
   }
 
-  Widget menuOption(IconData icon, String text) {
-    return Column(
-      children: [
-        CircleAvatar(
-          radius: 24,
-          backgroundColor: Colors.pink[50],
-          child: Icon(icon, color: Colors.pink),
-        ),
-        SizedBox(height: 8),
-        Text(
-          text,
-          style: TextStyle(fontSize: 12),
-        ),
-      ],
-    );
-  }
-
-  Widget dealCard(BuildContext context,String imageUrl, String title, String subtitle, String buttonText) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Container(
-        width: MediaQuery.of(context).size.width *0.9,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-                child: Image.asset(
-                  imageUrl,
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text(subtitle),
-                    SizedBox(height: 8),
-
-                  ],
-                ),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.orangeAccent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              onPressed: () {},
-              child: Text(buttonText,style: TextStyle(color: Colors.black),),
-            ),
-            SizedBox(
-              width: 8,
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
 }
