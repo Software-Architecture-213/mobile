@@ -1,227 +1,115 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/viewmodels/brand_viewmodel.dart';
+import 'package:provider/provider.dart';
 
-class VoucherDetailPage extends StatelessWidget {
+import '../constant/deal_card.dart';
+import '../constant/menu_item.dart';
+import '../voucher_detail/voucher_detail_screen.dart';
+
+class VoucherScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFF1DFC7),
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {},
+        leading: Padding(
+          padding: const EdgeInsets.only(bottom: 8.0,right: 8,left: 8),
+          child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: Icon(Icons.arrow_back_outlined,size: 26,),
+              color: Colors.black),
         ),
-        title: Text(
-          'Voucher Detail',
-          style: TextStyle(color: Colors.black),
+        title: Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: "Tìm kiếm ưu đãi...",
+              filled: true,
+              fillColor: Colors.white,
+              contentPadding: EdgeInsets.only(left: 16),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(26),
+                borderSide: BorderSide.none,
+              ),
+            ),
+          ),
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.bookmark_border, color: Colors.black),
-            onPressed: () {},
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: Icon(Icons.notifications, color: Colors.black,size: 26,),
           ),
+          SizedBox(width: 16),
         ],
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Invite Section
-              Row(
+        child: Column(
+          children: [
+            SizedBox(height: 8),
+            //Menu options
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 8,right: 8),
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      CircleAvatar(
-                          backgroundImage: AssetImage('assets/logoAI.jpg')),
-                      SizedBox(width: 8),
-                      CircleAvatar(
-                          backgroundImage: AssetImage('assets/logoAI.jpg')),
-                      SizedBox(width: 8),
-                      CircleAvatar(
-                          backgroundImage: AssetImage('assets/logoAI.jpg')),
-                      SizedBox(width: 8),
-                      Text("+20 Going"),
-                    ],
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.pink.shade100,
-                      shape: StadiumBorder(),
-                    ),
-                    onPressed: () {},
-                    child: Text(
-                      "Invite",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
+                  menuOption(Icons.percent, "Nhập mã"),
+                  menuOption(Icons.card_giftcard, "Quà của bạn"),
+                  menuOption(Icons.money, "Thanh toán"),
+                  menuOption(Icons.star, "VOU Rewards"),
+                  menuOption(Icons.location_on, "Thổ địa VOU"),
                 ],
               ),
-              SizedBox(height: 16),
-
-              // Coupon Card
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade700,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'COUPON',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'SAVE %',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Code: xxxxxxxx',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Container(
-                          height: 50,
-                          width: 100,
-                          color: Colors.white,
-                          child: Center(child: Text('Barcode')),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-
-              // Remaining Voucher Info
-              Row(
+            ),
+            SizedBox(height: 16),
+            // Deals
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(8),
+              color: Color(0xFFF1DFC7),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.videogame_asset, color: Colors.blue),
-                  SizedBox(width: 8),
                   Text(
-                    "Remain Turn:",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  Text("Remain Voucher:"),
-                ],
-              ),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Icon(Icons.calendar_today, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Text(
-                    "Exp date",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade100,
-                    ),
-                    onPressed: () {},
-                    child: Text("See others"),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-
-              // Related Voucher Section
-              Text(
-                'Related Voucher',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/starbucks.png',
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Starbucks Meeting"),
-                          ),
-                        ],
-                      ),
+                    "Chớt nắm thêm nghìn deal ngon!",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/kfc.jpg',
-                            height: 100,
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("KFC Master Chef"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                  SizedBox(height: 8),
+                  Consumer<BrandViewModel>(
+                     builder: (context, brandViewModel, child) {
+                       if (brandViewModel.isLoadingVoucher) {
+                         return Center(child: CircularProgressIndicator());
+                       }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: brandViewModel.vouchers.map((voucher) {
+                            return GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => VoucherDetailPage(voucher: voucher,),
+                                    ),
+                                  );
+                                },
+                                child: dealCard(context, voucher.imageUrl!, voucher.code, voucher.description ?? '', "Thu thập"));
+                          }).toList(),
+                        ),
+                      );
+                    }
+                  )
                 ],
               ),
-              SizedBox(height: 16),
-
-              // Description Section
-              Text(
-                "Description",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
-              SizedBox(height: 8),
-              Text(
-                "This voucher can be used for discounts on select items. "
-                "Ensure to redeem it before the expiration date.",
-                style: TextStyle(color: Colors.black54),
-              ),
-              SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text("Choose Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 14),),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward,color: Colors.white,size: 16,),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
+            )
+          ],
         ),
-
       ),
     );
   }

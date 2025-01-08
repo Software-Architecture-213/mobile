@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import '../../models/response/api_response.dart';
-import '../../models/user.dart';
-import '../../utils/dio/dio_identity.dart';
+import '../models/response/api_response.dart';
+import '../models/user.dart';
+import '../utils/dio/dio_identity.dart';
 
 class AuthService{
   final dio = DioIdentity().dio;

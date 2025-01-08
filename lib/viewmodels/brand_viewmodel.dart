@@ -1,18 +1,45 @@
 import 'package:flutter/material.dart';
-
+import 'package:mobile/models/voucher.dart';
+import 'package:mobile/services/promotion_service.dart';
+import 'package:mobile/services/voucher_service.dart';
 import '../models/brand.dart';
-import '../services/brand_services/brand_service.dart';
+import '../models/promotion.dart';
+import '../services/brand_service.dart';
 
 class BrandViewModel extends ChangeNotifier {
   final BrandService _brandService = BrandService();
+  final PromotionService _promotionService = PromotionService();
+  final VoucherService _voucherService = VoucherService();
   List<Brand> _brands = [];
   List<Brand> get brands => _brands;
-  bool isLoading = false;
+
+  List<Promotion> _promotions = [];
+  List<Promotion> get promotions => _promotions;
+
+  List<Voucher> _vouchers = [];
+  List<Voucher> get vouchers => _vouchers;
+
+  bool isLoadingBrand = false;
+  bool isLoadingPromotion = false;
+  bool isLoadingVoucher = false;
+
 
   Future<void> getAllBrands() async {
-    isLoading = true;
+    isLoadingBrand = true;
     _brands = await _brandService.getAllBrands();
-    isLoading = false;
+    isLoadingBrand = false;
+    notifyListeners();
+  }
+  Future<void> getAllPromotions() async {
+    isLoadingPromotion = true;
+    _promotions = await _promotionService.getAllPromotions();
+    isLoadingPromotion = false;
+    notifyListeners();
+  }
+  Future<void> getAllVouchers() async {
+    isLoadingVoucher = true;
+    _vouchers = await _voucherService.getAllVouchers();
+    isLoadingVoucher = false;
     notifyListeners();
   }
 }

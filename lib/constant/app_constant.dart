@@ -1,0 +1,1 @@
+const String defaultImageUrl = 'https://static.thenounproject.com/png/4595376-200.png';

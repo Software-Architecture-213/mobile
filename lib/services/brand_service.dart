@@ -1,6 +1,7 @@
 import 'package:mobile/utils/dio/dio_brand.dart';
 
-import '../../models/brand.dart';
+import '../models/brand.dart';
+import '../models/promotion.dart';
 
 class BrandService{
   final dio = DioBrand().dio;

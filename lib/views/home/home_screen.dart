@@ -1,13 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/views/favourite_promotion/favourite_screen.dart';
 import 'package:mobile/views/home/widgets/bottom_navigation_custom.dart';
+import 'package:mobile/views/home/widgets/campaign_card.dart';
+import 'package:mobile/views/home/widgets/invite_card.dart';
+import 'package:mobile/views/home/widgets/section_header.dart';
+import 'package:mobile/views/profile/profile_screen.dart';
+import 'package:mobile/views/voucher/voucher_screen.dart';
+import 'package:provider/provider.dart';
+import '../../viewmodels/brand_viewmodel.dart';
+import '../voucher_detail/voucher_detail_screen.dart';
 
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  HomeScreen({Key? key}) : super(key: key);
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+class _HomeScreenState extends State<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+    Provider.of<BrandViewModel>(context, listen: false).getAllBrands();
+    Provider.of<BrandViewModel>(context, listen: false).getAllPromotions();
+    Provider.of<BrandViewModel>(context, listen: false).getAllVouchers();
+  }
   Widget build(BuildContext context) {
+    int selectedBottomNavigation = 0;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.orange,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -68,55 +87,158 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                _buildCategoryButton('Restaurant', Icons.restaurant, Colors.green),
-                _buildCategoryButton('Car', Icons.directions_car, Colors.blue),
-                _buildCategoryButton('Shopping', Icons.shopping_bag, Colors.yellow),
-                _buildCategoryButton('...', Icons.more_horiz, Colors.purple),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSectionHeader('Newest Campaigns', 'See all'),
-              SizedBox(height: 10),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildCampaignCard('Sale 8/8', 'Nha Trang, Khanh Hoa', '20 Going', Icons.favorite),
-                    SizedBox(width: 8),
-                    _buildCampaignCard('Starbucks', 'Hanoi', '15 Going', Icons.favorite),
-                    SizedBox(width: 8),
-                    _buildCampaignCard('Starbucks', 'Hanoi', '15 Going', Icons.favorite),
-                  ],
-                ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildCategoryButton('Restaurant', Icons.restaurant, Colors.green),
+                  _buildCategoryButton('Car', Icons.directions_car, Colors.blue),
+                  _buildCategoryButton('Shopping', Icons.shopping_bag, Colors.yellow),
+                  _buildCategoryButton('...', Icons.more_horiz, Colors.purple),
+                ],
               ),
-              SizedBox(height: 20),
-              _buildInviteCard(),
-            ],
-                      ),
-          ),
-        ],
+            ),
+            Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildSectionHeader(context,'Promotions', 'See all', 'promotion'),
+                  SizedBox(height: 5),
+                  Consumer<BrandViewModel>(
+                    builder: (context, brandViewModel, child) {
+                      if (brandViewModel.isLoadingPromotion) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: brandViewModel.promotions.map((promotion) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: buildCampaignCard(
+                                promotion.name,
+                                promotion.description ?? '',
+                                promotion.status,
+                                promotion.imageUrl!,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  buildInviteCard(),
+                  SizedBox(height: 10),
+                  buildSectionHeader(context,'Vouchers', 'See all', 'voucher'),
+                  SizedBox(height: 10),
+                  Consumer<BrandViewModel>(
+                    builder: (context, brandViewModel, child) {
+                      if (brandViewModel.isLoadingVoucher) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: brandViewModel.vouchers.map((voucher) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VoucherDetailPage(voucher: voucher),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: buildCampaignCard(
+                                  voucher.code,
+                                  voucher.description ?? '',
+                                  voucher.status,
+                                  voucher.imageUrl!,
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(height: 20),
+                  buildSectionHeader(context,'Brands', 'See all', 'brand'),
+                  SizedBox(height: 10),
+                  Consumer<BrandViewModel>(
+                    builder: (context, brandViewModel, child) {
+                      if (brandViewModel.isLoadingBrand) {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: brandViewModel.brands.map((brand) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: buildCampaignCard(
+                                brand.displayName,
+                                brand.field,
+                                brand.status,
+                                brand.imageUrl!,
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       bottomNavigationBar: CustomBottomNavigation(
-      currentIndex: 0,
-      onTap: (index) {
-
-      },
-    ),
+        currentIndex: selectedBottomNavigation,
+        onTap: (index) {
+          _onTap(index);
+        },
+      ),
     );
   }
-
+  void _onTap(int index) {
+    if(index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomeScreen()),
+      );
+    }else if(index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VoucherScreen()),
+      );
+    }
+    else if(index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => FavouriteScreen()),
+      );
+    }
+    else if(index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ProfileScreen()),
+      );
+    }
+  }
   Widget _buildCategoryButton(String label, IconData icon, Color color) {
     return Column(
       children: [
@@ -130,100 +252,5 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSectionHeader(String title, String actionText) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        Row(
-          children: [
-            TextButton(onPressed: () {}, child: Text(actionText,style: TextStyle(color: Colors.black,fontSize: 16),)),
-            Icon(Icons.arrow_forward, size: 16),
-          ],
-        ),
-      ],
-    );
-  }
 
-  Widget _buildCampaignCard(String title, String location, String status, IconData icon) {
-    return Container(
-      width: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-              image: DecorationImage(
-                image: AssetImage('assets/starbucks.png'), // Replace with your image
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              children: [
-                Icon(Icons.location_on, size: 14, color: Colors.grey),
-                SizedBox(width: 4),
-                Expanded(child: Text(location, style: TextStyle(fontSize: 12, color: Colors.grey))),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Icon(icon, size: 14, color: Colors.red),
-                SizedBox(width: 4),
-                Text(status, style: TextStyle(fontSize: 12, color: Colors.grey)),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInviteCard() {
-    return Container(
-      height: 170,
-      width: double.infinity,
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.lightBlue[50],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text('Invite your friends', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          SizedBox(height: 4),
-          Text('Get \$20 for ticket'),
-          SizedBox(height: 30),
-          ElevatedButton(
-            onPressed: () {},
-            child: Text('INVITE'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

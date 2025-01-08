@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/views/brand/widgets/campaign_item.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/brand_viewmodel.dart';
 
@@ -29,7 +30,9 @@ class _CampaignPageState extends State<CampaignPage> {
         title: Text("Campaigns", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
         backgroundColor: Colors.white,
         elevation: 1,
-        leading: Icon(Icons.arrow_back, color: Colors.black),
+        leading: IconButton(icon: Icon(Icons.arrow_back), color: Colors.black, onPressed: () {
+          Navigator.pop(context);
+        },),
       ),
       body: Column(
         children: [
@@ -54,7 +57,8 @@ class _CampaignPageState extends State<CampaignPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _buildCategoryButton('Food', Colors.red),
+                _buildCategoryButton('All', Colors.red),
+                _buildCategoryButton('Food', Colors.yellow),
                 _buildCategoryButton('Music', Colors.orange),
                 _buildCategoryButton('Restaurant', Colors.green),
               ],
@@ -63,20 +67,24 @@ class _CampaignPageState extends State<CampaignPage> {
           SizedBox(height: 16),
           // Campaigns List
           Expanded(
-            child: brandViewModel.isLoading
+            child: brandViewModel.isLoadingBrand
                 ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: brandViewModel.brands.length,
-              itemBuilder: (context, index) {
-                final brand = brandViewModel.brands[index];
-                return _buildCampaignItem(
-                  brand.displayName,
-                  brand.field,
-                  brand.imageUrl!, // Replace with appropriate image
-                );
-              },
-            ),
+                : Consumer<BrandViewModel>(
+                    builder: (context, itemProvider, child){
+                    return ListView.builder(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      itemCount: brandViewModel.brands.length,
+                      itemBuilder: (context, index) {
+                      final brand = brandViewModel.brands[index];
+                      return buildCampaignItem(
+                        brand.displayName,
+                        brand.field,
+                        brand.imageUrl!,
+                      );
+                    },
+                  );
+                  }
+                ),
           ),
         ],
       ),
@@ -97,24 +105,5 @@ class _CampaignPageState extends State<CampaignPage> {
     );
   }
 
-  Widget _buildCampaignItem(String title, String date, String imageUrl) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 8),
-      child: ListTile(
-        leading: Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(imageUrl), // Replace with your assets
-              fit: BoxFit.cover,
-            ),
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(date),
-      ),
-    );
-  }
+
 }

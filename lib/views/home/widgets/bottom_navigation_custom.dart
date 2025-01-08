@@ -22,12 +22,12 @@ class CustomBottomNavigation extends StatelessWidget {
           label: 'Home',
         ),
         NavigationDestination(
-          icon: Badge(label: Text('2'),child: Icon(Icons.notifications_sharp)),
-          label: 'Notifications',
-        ),
-        NavigationDestination(
           icon: Badge(label: Text('2'),child: Icon(Icons.wallet_giftcard)),
           label: 'Vouchers',
+        ),
+        NavigationDestination(
+          icon: Badge(label: Text('2'),child: Icon(Icons.notifications_sharp)),
+          label: 'Notifications',
         ),
         NavigationDestination(
           icon: Icon(Icons.person),
