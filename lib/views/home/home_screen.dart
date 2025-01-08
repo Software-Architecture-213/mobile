@@ -8,6 +8,7 @@ import 'package:mobile/views/profile/profile_screen.dart';
 import 'package:mobile/views/voucher/voucher_screen.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/brand_viewmodel.dart';
+import '../voucher_detail/voucher_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key? key}) : super(key: key);
@@ -145,13 +146,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: brandViewModel.vouchers.map((voucher) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: buildCampaignCard(
-                                voucher.code,
-                                voucher.description ?? '',
-                                voucher.status,
-                                voucher.imageUrl!,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => VoucherDetailPage(voucher: voucher),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: buildCampaignCard(
+                                  voucher.code,
+                                  voucher.description ?? '',
+                                  voucher.status,
+                                  voucher.imageUrl!,
+                                ),
                               ),
                             );
                           }).toList(),

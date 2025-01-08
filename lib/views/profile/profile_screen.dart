@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../gift/gift_screen.dart';
+
 
 class ProfileScreen extends StatelessWidget {
   @override
@@ -118,8 +120,14 @@ class ProfileScreen extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(Icons.history, color: Colors.orange),
-              title: Text('History'),
+              title: Text('Gift History'),
               trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyGiftHistory()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.favorite, color: Colors.orange),
