@@ -3,6 +3,7 @@ import 'package:mobile/viewmodels/auth_viewmodel.dart';
 import 'package:mobile/viewmodels/brand_viewmodel.dart';
 import 'package:mobile/views/auth/Login/login_screen.dart';
 import 'package:mobile/views/auth/register/register_screen.dart';
+import 'package:mobile/views/brand/brand_screen.dart';
 import 'package:mobile/views/constant/bottom_sheet.dart';
 import 'package:mobile/views/constant/share_bottomshet.dart';
 import 'package:mobile/views/game/shake/shake_game.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: CampaignPage(),
     );
   }
 }
