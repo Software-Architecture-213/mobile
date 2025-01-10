@@ -42,4 +42,7 @@ class BrandViewModel extends ChangeNotifier {
     isLoadingVoucher = false;
     notifyListeners();
   }
+  Future<void> addFavourite(String promotionId) async {
+    await _promotionService.addFavourite(promotionId);
+  }
 }

@@ -3,8 +3,9 @@ import 'package:mobile/viewmodels/brand_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../constant/deal_card.dart';
 import '../constant/menu_item.dart';
+import '../promotion_detail/promotion_detail_screen.dart';
 
-class PromotionPage extends StatelessWidget {
+class PromotionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,14 +135,24 @@ class PromotionPage extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: brandViewModel.promotions.map((promotion) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: dealCard(
-                                context,
-                                promotion.imageUrl!,
-                                promotion.name,
-                                promotion.description ?? '',
-                                "Thu thập",
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PromotionDetailScreen(promotion: promotion),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: dealCard(
+                                  context,
+                                  promotion.imageUrl!,
+                                  promotion.name,
+                                  promotion.description ?? '',
+                                  "Thu thập",
+                                ),
                               ),
                             );
                           }).toList(),

@@ -27,7 +27,7 @@ Widget buildSectionHeader(BuildContext context, String title, String actionText,
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => PromotionPage()),
+                    builder: (context) => PromotionScreen()),
               );
             }
             else{

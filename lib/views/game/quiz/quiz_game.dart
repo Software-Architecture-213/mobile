@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class QuizApp extends StatefulWidget {
+import '../widgets/result_dialog.dart';
+
+class QuizGame extends StatefulWidget {
   @override
-  _QuizAppState createState() => _QuizAppState();
+  _QuizGameState createState() => _QuizGameState();
 }
 
-class _QuizAppState extends State<QuizApp> {
+class _QuizGameState extends State<QuizGame> {
   List<Map<String, Object>> questions = [
     {
       'question': 'Four of the five major sports in the US have what word in their name?',
@@ -60,9 +62,7 @@ class _QuizAppState extends State<QuizApp> {
         });
         startTimer();
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Quiz completed!')),
-        );
+        showResultDialog(context);
       }
     });
   }
@@ -135,6 +135,8 @@ class _QuizAppState extends State<QuizApp> {
       } else if (answer == selectedAnswer) {
         buttonColor = Colors.red;
         icon = Icons.close;
+      }else {
+        buttonColor = Colors.white; // Thay đổi màu của button khi hết thời gian đếm ngược
       }
     } else if (answer == selectedAnswer) {
       buttonColor = Colors.blue;
@@ -147,6 +149,7 @@ class _QuizAppState extends State<QuizApp> {
         child: ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: buttonColor,
+            disabledBackgroundColor: buttonColor,
             padding: EdgeInsets.symmetric(vertical: 15),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -164,6 +167,7 @@ class _QuizAppState extends State<QuizApp> {
                 answer,
                 style: TextStyle(color: Colors.black, fontSize: 16),
               ),
+              SizedBox(width: 5),
               if (icon != null) Icon(icon, color: Colors.white),
             ],
           ),

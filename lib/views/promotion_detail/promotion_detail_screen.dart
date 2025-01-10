@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/voucher.dart';
+import 'package:provider/provider.dart';
+import '../../models/promotion.dart';
+import '../../viewmodels/brand_viewmodel.dart';
 
-class VoucherDetailScreen extends StatelessWidget {
-  final Voucher voucher;
+class PromotionDetailScreen extends StatelessWidget {
+  final Promotion promotion;
 
-  VoucherDetailScreen({required this.voucher});
+  PromotionDetailScreen({required this.promotion});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,7 +20,7 @@ class VoucherDetailScreen extends StatelessWidget {
           },
         ),
         title: Text(
-          'Voucher Detail',
+          'Promotion Detail',
           style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -69,72 +71,6 @@ class VoucherDetailScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-
-              // Coupon Card
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade700,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'COUPON',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      'SAVE ${voucher.value}%',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Code: ${voucher.code}',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: Colors.white,
-                          ),
-                          height: 50,
-                          width: 100,
-                          child: Center(child: Text('Barcode')),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 16),
-
-              // Remaining Voucher Info
-              Row(
-                children: [
-                  Icon(Icons.videogame_asset, color: Colors.blue),
-                  SizedBox(width: 8),
-                  Text(
-                    "Remain Turn:",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  Text("Remain Voucher: ${voucher.maxCounts}"),
-                ],
-              ),
-              SizedBox(height: 8),
               Row(
                 children: [
                   Icon(Icons.calendar_today, color: Colors.blue),
@@ -154,12 +90,42 @@ class VoucherDetailScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 16),
-
-              // Related Voucher Section
               Text(
-                'Related Voucher',
+                'Related Games',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
+              SizedBox(height: 8),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: promotion.games!.map((game) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Card(
+                        child: Column(
+                          children: [
+                            Image.network(
+                              game.imageUrl!,
+                              width: 200,
+                              height: 100,
+                              fit: BoxFit.cover,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(game.name),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+              Text(
+                'Related Vouchers',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+
               SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -210,7 +176,7 @@ class VoucherDetailScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                voucher.description ??  "This voucher can be used for discounts on select items. "
+                promotion.description ??  "This voucher can be used for discounts on select items. "
                     "Ensure to redeem it before the expiration date.",
                 style: TextStyle(color: Colors.black54),
               ),

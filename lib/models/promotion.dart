@@ -1,7 +1,8 @@
 import 'package:mobile/models/voucher.dart';
+import 'game.dart';
 
 class Promotion {
-  String? id; // Promotion ID
+  String id; // Promotion ID
   String name; // Tên khuyến mãi
   String? description; // Mô tả khuyến mãi
   String? imageUrl; // Hình ảnh khuyến mãi
@@ -12,12 +13,12 @@ class Promotion {
   double? remainingBudget; // Ngân sách còn lại
   String status; // Trạng thái khuyến mãi
   List<Voucher>? vouchers; // Danh sách voucher trong khuyến mãi
-  List<String>? games; // Danh sách trò chơi tham gia khuyến mãi
+  List<Game>? games; // Danh sách trò chơi tham gia khuyến mãi
   DateTime createdAt; // Ngày tạo khuyến mãi
   DateTime? updatedAt; // Ngày cập nhật khuyến mãi
 
   Promotion({
-    this.id,
+    required this.id,
     required this.name,
     this.description,
     this.imageUrl,
@@ -48,7 +49,7 @@ class Promotion {
       vouchers: json['vouchers'] != null
           ? List<Voucher>.from(json['vouchers'].map((v) => Voucher.fromJson(v)))
           : null,
-      games: json['games'] != null ? List<String>.from(json['games']) : null,
+      games: json['games'] != null ? List<Game>.from(json['games']) : null,
       createdAt: DateTime.parse(json['createAt']),
       updatedAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
     );

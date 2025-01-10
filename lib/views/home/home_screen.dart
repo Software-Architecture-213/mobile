@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/user_response.dart';
 import 'package:mobile/views/favourite_promotion/favourite_screen.dart';
 import 'package:mobile/views/home/widgets/bottom_navigation_custom.dart';
 import 'package:mobile/views/home/widgets/campaign_card.dart';
 import 'package:mobile/views/home/widgets/invite_card.dart';
+import 'package:mobile/views/home/widgets/promotion_card.dart';
 import 'package:mobile/views/home/widgets/section_header.dart';
 import 'package:mobile/views/profile/profile_screen.dart';
 import 'package:mobile/views/voucher/voucher_screen.dart';
 import 'package:provider/provider.dart';
+import '../../utils/websocket/promotion_websocket.dart';
+import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/brand_viewmodel.dart';
 import '../voucher_detail/voucher_detail_screen.dart';
 
@@ -15,15 +19,37 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 class _HomeScreenState extends State<HomeScreen> {
+  late PromotionWebSocket _webSocket;
+  late UserResponse user;
   @override
-  void initState() {
+  void initState()  {
     super.initState();
+    _initializeData();
+  }
+  Future<void> _initializeData() async {
     Provider.of<BrandViewModel>(context, listen: false).getAllBrands();
     Provider.of<BrandViewModel>(context, listen: false).getAllPromotions();
     Provider.of<BrandViewModel>(context, listen: false).getAllVouchers();
+    user = await Provider.of<AuthViewModel>(context, listen: false).getProfile();
+    _webSocket = PromotionWebSocket(
+      'ws://10.0.2.2:80/api/brands/ws?userId=${user.userId}',
+      onOpen: () {
+        print('Connected to WebSocket');
+      },
+    );
+    _webSocket.messages.listen((message) {
+      print('Received: $message');
+      // Handle the received message
+    });
+  }
+  @override
+  void dispose() {
+    _webSocket.close();
+    super.dispose();
   }
   Widget build(BuildContext context) {
     int selectedBottomNavigation = 0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.orange,
@@ -120,11 +146,12 @@ class _HomeScreenState extends State<HomeScreen> {
                           children: brandViewModel.promotions.map((promotion) {
                             return Padding(
                               padding: const EdgeInsets.only(right: 8.0),
-                              child: buildCampaignCard(
-                                promotion.name,
-                                promotion.description ?? '',
-                                promotion.status,
-                                promotion.imageUrl!,
+                              child: PromotionCard(
+                                promotionId:  promotion.id,
+                                title:  promotion.name,
+                                field: promotion.description ?? '',
+                                status: promotion.status,
+                                image: promotion.imageUrl!,
                               ),
                             );
                           }).toList(),
@@ -151,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => VoucherDetailPage(voucher: voucher),
+                                    builder: (context) => VoucherDetailScreen(voucher: voucher),
                                   ),
                                 );
                               },

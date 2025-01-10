@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/user_response.dart';
 import '../services/auth_service.dart';
 import '../models/response/api_response.dart';
 import '../models/user.dart';
@@ -39,6 +40,10 @@ class AuthViewModel extends ChangeNotifier {
     isLoadingValidateOtp = false;
     notifyListeners();
     return response;
+  }
+
+  Future<UserResponse> getProfile() async {
+    return await _authService.getProfile();
   }
 
 }
