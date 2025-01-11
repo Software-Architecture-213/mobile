@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/user_response.dart';
 import '../services/auth_service.dart';
 import '../models/response/api_response.dart';
 import '../models/user.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
+
+  UserResponse? user;
   bool isLoadingRegister = false;
   bool isLoadingLogin = false;
   bool isLoadingGenerateOtp = false;
   bool isLoadingValidateOtp = false;
+
   Future<ApiResponse> register(User user) async {
     isLoadingRegister = true;
     final response = await _authService.register(user);
@@ -39,6 +43,11 @@ class AuthViewModel extends ChangeNotifier {
     isLoadingValidateOtp = false;
     notifyListeners();
     return response;
+  }
+
+  Future<UserResponse> getProfile() async {
+    user =  await _authService.getProfile();
+    return user!;
   }
 
 }

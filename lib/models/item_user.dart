@@ -1,29 +1,30 @@
+import 'item.dart';
+
 class ItemUser {
-  String? id; // Item_User ID
-  String? userId; // Người sở hữu
-  String? itemId; // Vật phẩm
-  String? gameId; // Trò chơi (để dễ tiến hành trao đổi trong 1 game)
-  int quantity; // Số lượng
+  String id; // Item_User ID
+  String userId; // Người sở hữu
+  Item? item; // Vật phẩm
+  String? gameId; // Trò chơi
+  int? quantity; // Số lượng
   DateTime createdAt; // Ngày sở hữu
-  DateTime updatedAt; // Ngày cập nhật
+  DateTime? updatedAt; // Ngày cập nhật
 
   ItemUser({
-    this.id,
-    this.userId,
-    this.itemId,
+    required this.id,
+    required this.userId,
+    this.item,
     this.gameId,
-    this.quantity = 1,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+    this.quantity,
+    required this.createdAt,
+    this.updatedAt,
+  }) ;
 
   factory ItemUser.fromJson(Map<String, dynamic> json) {
     return ItemUser(
       id: json['_id'],
       userId: json['userId'],
-      itemId: json['itemId'],
-      gameId: json['gameId'],
+      item: json['itemId'] != null ? Item.fromJson(json['itemId']) : null,
+      gameId: json['gameId'] ?? '',
       quantity: json['quantity'] ?? 1,
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
@@ -34,11 +35,11 @@ class ItemUser {
     return {
       '_id': id,
       'userId': userId,
-      'itemId': itemId,
+      'itemId': item,
       'gameId': gameId,
       'quantity': quantity,
       'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

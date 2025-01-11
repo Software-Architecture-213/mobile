@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/response/api_response.dart';
+import '../models/response/user_response.dart';
 import '../models/user.dart';
 import '../utils/dio/dio_identity.dart';
 
@@ -56,6 +58,13 @@ class AuthService{
       );
 
       if (response.statusCode == 200) {
+        final accessToken = response.data['accessToken'];
+        final refreshToken = response.data['refreshToken'];
+
+        // Save tokens to SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', accessToken);
+        await prefs.setString('refreshToken', refreshToken);
         return ApiResponse(
           success: true,
           message: 'Đăng nhập thành công',
@@ -163,5 +172,38 @@ class AuthService{
         statusCode: 500,
       );
     }
+  }
+  //Get profile
+  Future<UserResponse> getProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('accessToken');
+
+      if (accessToken == null) {
+        throw Exception('Access token not found');
+      }
+      final response = await dio.get(
+          '/users/me',
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $accessToken',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        return UserResponse.fromJson(response.data);
+      } else {
+        throw Exception('Lấy thông tin thất bại: ${response.data}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception('Lấy thông tin thất bại: ${e.response!.data}');
+      }
+      throw Exception('Lỗi kết nối: $e');
+    }
+  }
+  Future<String?> getToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('accessToken');
   }
 }

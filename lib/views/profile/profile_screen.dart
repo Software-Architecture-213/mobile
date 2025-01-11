@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/user_response.dart';
+import 'package:mobile/views/my_item/my_item_screen.dart';
+import 'package:mobile/views/my_voucher/my_voucher_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../../viewmodels/auth_viewmodel.dart';
+import '../favourite_promotion/favourite_screen.dart';
 import '../gift/gift_screen.dart';
 
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _ProfileScreenState();
+}
 
-class ProfileScreen extends StatelessWidget {
+class _ProfileScreenState extends State<ProfileScreen> {
+  UserResponse? user ;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<AuthViewModel>(context, listen: false).getProfile().then((value) {
+      setState(() {
+        user = value;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,36 +32,36 @@ class ProfileScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
+            onPressed: () {
+              Navigator.pop(context);
+            },
             icon:Icon(Icons.arrow_back_outlined), color: Colors.black),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                onPressed: () {
-                },
+                  onPressed: () {
+                  },
                   icon: Icon(Icons.more_horiz),
                   color: Colors.black)),
         ],
       ),
-      body: SingleChildScrollView(
+      body:
+      user == null
+          ? Center(child: CircularProgressIndicator())
+          :
+      SingleChildScrollView(
         child: Column(
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/3135/3135715.png'), // Thay bằng ảnh của bạn
+              backgroundImage: NetworkImage(
+                  'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'), // Thay bằng ảnh của bạn
             ),
             SizedBox(height: 10),
             Text(
-              'Nguyen Duc Then',
+              user!.displayName,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 5),
-            Text(
-              'Ho Chi Minh, Vietnam',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             SizedBox(height: 5),
             Row(
@@ -48,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Icon(Icons.phone, size: 18, color: Colors.grey),
                 SizedBox(width: 5),
-                Text('+84-900000009', style: TextStyle(color: Colors.grey)),
+                Text(user!.phoneNumber, style: TextStyle(color: Colors.grey)),
               ],
             ),
             SizedBox(height: 5),
@@ -57,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 Icon(Icons.email, size: 18, color: Colors.grey),
                 SizedBox(width: 5),
-                Text('a@g.com', style: TextStyle(color: Colors.grey)),
+                Text(user!.email, style: TextStyle(color: Colors.grey)),
               ],
             ),
             SizedBox(height: 20),
@@ -68,7 +89,8 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Text(
                       '₹140.50',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight
+                          .bold),
                     ),
                     Text('Wallet', style: TextStyle(color: Colors.grey)),
                   ],
@@ -82,7 +104,8 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     Text(
                       '12',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight
+                          .bold),
                     ),
                     Text('Orders', style: TextStyle(color: Colors.grey)),
                   ],
@@ -95,28 +118,34 @@ class ProfileScreen extends StatelessWidget {
               leading: Icon(Icons.card_giftcard, color: Colors.orange),
               title: Text('My Vouchers'),
               trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyVoucherScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.favorite, color: Colors.orange),
+              title: Text('Favorite Promotions'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FavouriteScreen()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.extension, color: Colors.orange),
-              title: Text('Puzzle Collection'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      'New',
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Icon(Icons.arrow_forward_ios, size: 16),
-                ],
-              ),
+              title: Text('My items'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyItemScreen()),
+                );
+              },
             ),
             ListTile(
               leading: Icon(Icons.history, color: Colors.orange),
@@ -128,16 +157,6 @@ class ProfileScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => MyGiftHistory()),
                 );
               },
-            ),
-            ListTile(
-              leading: Icon(Icons.favorite, color: Colors.orange),
-              title: Text('Your Favorites'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            ),
-            ListTile(
-              leading: Icon(Icons.payment, color: Colors.orange),
-              title: Text('Payment'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
             ),
             ListTile(
               leading: Icon(Icons.share, color: Colors.orange),
@@ -153,6 +172,29 @@ class ProfileScreen extends StatelessWidget {
               leading: Icon(Icons.settings, color: Colors.orange),
               title: Text('Settings'),
               trailing: Icon(Icons.arrow_forward_ios, size: 16),
+            ),
+            ListTile(
+              leading: Icon(Icons.extension, color: Colors.orange),
+              title: Text('Puzzle Collection'),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      'New',
+                      style: TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Icon(Icons.arrow_forward_ios, size: 16),
+                ],
+              ),
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.orange),

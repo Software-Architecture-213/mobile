@@ -95,7 +95,7 @@ class VoucherScreen extends StatelessWidget {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => VoucherDetailPage(voucher: voucher,),
+                                      builder: (context) => VoucherDetailScreen(voucher: voucher,),
                                     ),
                                   );
                                 },

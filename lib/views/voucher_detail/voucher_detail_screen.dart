@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/voucher.dart';
 
-class VoucherDetailPage extends StatelessWidget {
+class VoucherDetailScreen extends StatelessWidget {
   final Voucher voucher;
 
-  VoucherDetailPage({required this.voucher});
+  VoucherDetailScreen({required this.voucher});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

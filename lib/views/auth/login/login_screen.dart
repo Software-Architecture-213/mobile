@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile/views/auth/Login/widgets/textformfield_login.dart';
 import 'package:mobile/views/auth/register/register_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../../utils/validators/email_validator.dart';
 import '../../../utils/validators/password_validator.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
 import '../../home/home_screen.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
@@ -165,7 +164,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Register()),
+                                    builder: (context) => RegisterScreen()),
                               );
                             },
                             child: const Text(

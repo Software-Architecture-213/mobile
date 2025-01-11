@@ -1,28 +1,30 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/user_response.dart';
+import 'package:mobile/viewmodels/auth_viewmodel.dart';
+import 'package:provider/provider.dart';
 import 'dart:math';
 import 'dart:async';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:vibration/vibration.dart';
-import 'reward.dart';
+import '../../../models/item.dart';
+import '../../../viewmodels/game_viewmodel.dart';
 
-class ShakeGame extends StatefulWidget {
+class ShakeGameApp extends StatefulWidget {
+  String gameId;
+  ShakeGameApp({required this.gameId});
   @override
-  _ShakeGameState createState() => _ShakeGameState();
+  _ShakeGameAppState createState() => _ShakeGameAppState();
 }
 
-class _ShakeGameState extends State<ShakeGame> {
-  Reward? currentReward;
+class _ShakeGameAppState extends State<ShakeGameApp> {
+  Item? currentReward;
   final double shakeThreshold = 15.0;
   final Random random = Random();
   Timer? debounceTimer;
-  List<Reward> mockRewards = [
-    Reward(name: 'Reward 1', imageUrl: 'assets/reward1.png'),
-    Reward(name: 'Reward 2', imageUrl: 'assets/reward2.png'),
-    Reward(name: 'Reward 3', imageUrl: 'assets/reward3.png'),
-    // Thêm các phần thưởng khác
-  ];
   late ConfettiController _confettiController;
+  UserResponse? user;
+
   @override
   void initState() {
     super.initState();
@@ -35,6 +37,8 @@ class _ShakeGameState extends State<ShakeGame> {
       }
     });
     _confettiController = ConfettiController(duration: const Duration(seconds: 2));
+
+    user = Provider.of<AuthViewModel>(context, listen: false).user;
   }
   @override
   void dispose() {
@@ -46,10 +50,12 @@ class _ShakeGameState extends State<ShakeGame> {
     _confettiController.play(); // Bắt đầu hiệu ứng rơi hoa giấy
   }
 
-  void _selectRandomReward() {
+  void _selectRandomReward() async{
+    await Provider.of<GameViewModel>(context, listen: false).getRandomItemByGameId(widget.gameId);
     setState(() {
-      currentReward = mockRewards[random.nextInt(mockRewards.length)];
+      currentReward = Provider.of<GameViewModel>(context, listen: false).randomItem;
     });
+    await Provider.of<GameViewModel>(context, listen: false).createItemUser(user!.userId, currentReward!.id, widget.gameId, 1);
   }
 
   void _vibrate() async {
@@ -61,7 +67,18 @@ class _ShakeGameState extends State<ShakeGame> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Center(child: Text('Shake Game',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 26),))),
+      appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon:Icon(Icons.arrow_back_outlined), color: Colors.black),
+          title: Center(child: Text(
+            'Shake Game',
+            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 26),
+            )
+          )
+      ),
       body: Stack(
         children: [
           currentReward == null
@@ -69,8 +86,8 @@ class _ShakeGameState extends State<ShakeGame> {
                 child: GestureDetector(
                   onTap: (){
                     _openGift(); // Bắt đầu hiệu ứng rơi hoa giấy
-                    _selectRandomReward(); // Chọn phần thưởng khi nhấn nút
                     _vibrate(); // Rung khi nhấn nút
+                    _selectRandomReward(); // Chọn phần thưởng khi nhấn nút
                   },
                   child: Image.asset('assets/gift.png', width: 300),
                 ),
@@ -80,8 +97,8 @@ class _ShakeGameState extends State<ShakeGame> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset(currentReward!.imageUrl,
-                      height: 200, // Set the desired height
+                    Image.network(currentReward!.imageUrl!,
+                      height: 200,
                       width: 300,
                       fit: BoxFit.fitWidth,),
                     SizedBox(height: 10),
