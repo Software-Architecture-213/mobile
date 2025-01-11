@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/quiz_game.dart';
 import 'package:provider/provider.dart';
 import '../../models/promotion.dart';
 import '../../viewmodels/brand_viewmodel.dart';
+import '../../viewmodels/game_viewmodel.dart';
+import '../game/quiz/quiz_game.dart';
+import '../game/shake/shake_game.dart';
 
 class PromotionDetailScreen extends StatelessWidget {
   final Promotion promotion;
@@ -76,16 +80,21 @@ class PromotionDetailScreen extends StatelessWidget {
                   Icon(Icons.calendar_today, color: Colors.blue),
                   SizedBox(width: 8),
                   Text(
-                    "Exp date",
+                    "Exp date:  ${promotion.endDate.toIso8601String().substring(0, 10)}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Spacer(),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade100,
-                    ),
-                    onPressed: () {},
-                    child: Text("See others"),
+                ],
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Row(
+                children: [
+                  Icon(Icons.access_time, color: Colors.blue),
+                  SizedBox(width: 8),
+                  Text(
+                    "Status:  ${promotion.status}",
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -99,27 +108,53 @@ class PromotionDetailScreen extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: promotion.games!.map((game) {
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: Card(
-                        child: Column(
-                          children: [
-                            Image.network(
-                              game.imageUrl!,
-                              width: 200,
-                              height: 100,
-                              fit: BoxFit.cover,
+                    return GestureDetector(
+                      onTap: () async {
+                        if (game.type == 'shake') {
+                          // Move to Shake Game
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ShakeGameApp(gameId: game.id,),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(game.name),
+                          );
+
+                        } else if (game.type == 'quiz') {
+                          // Call Quiz API
+                          await Provider.of<GameViewModel>(context, listen: false).getQuizByGameId(game.id);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => QuizGameApp(gameId: game.id,),
                             ),
-                          ],
+                          );
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Card(
+                          child: Column(
+                            children: [
+                              Image.network(
+                                game.imageUrl!,
+                                width: 200,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(game.name),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   }).toList(),
                 ),
+              ),
+              SizedBox(
+                height: 16,
               ),
               Text(
                 'Related Vouchers',
@@ -130,41 +165,39 @@ class PromotionDetailScreen extends StatelessWidget {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: [
-                    Card(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/starbucks.png',
-                            width: 200,
-                            height: 100,
-                            fit: BoxFit.cover,
+                  children: promotion.vouchers!.map((voucher) {
+                    return Container(
+                      width: 200,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Image.network(
+                                voucher.imageUrl!,
+                                width: 200,
+                                height: 100,
+                                fit: BoxFit.cover,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  voucher.description ?? '',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text("Status: " + voucher.type),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("Starbucks Meeting"),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
-                    SizedBox(width: 8),
-                    Card(
-                      child: Column(
-                        children: [
-                          Image.asset(
-                            'assets/kfc.jpg',
-                            height: 100,
-                            width: 200,
-                            fit: BoxFit.cover,
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text("KFC Master Chef"),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    );
+                  }).toList(),
                 ),
               ),
               SizedBox(height: 16),
@@ -185,14 +218,14 @@ class PromotionDetailScreen extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: Colors.orangeAccent,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Choose Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 14),),
+                      Text("Play Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14),),
                       SizedBox(width: 8),
-                      Icon(Icons.arrow_forward,color: Colors.white,size: 16,),
+                      Icon(Icons.arrow_forward,color: Colors.black,size: 16,),
                     ],
                   ),
                 ),

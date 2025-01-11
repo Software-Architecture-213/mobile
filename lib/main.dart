@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/viewmodels/auth_viewmodel.dart';
 import 'package:mobile/viewmodels/brand_viewmodel.dart';
-import 'package:mobile/views/game/quiz/quiz_game.dart';
+import 'package:mobile/viewmodels/game_viewmodel.dart';
+import 'package:mobile/views/auth/login/login_screen.dart';
+import 'package:mobile/views/home/home_screen.dart';
+import 'package:mobile/views/my_item/my_item_screen.dart';
+
 import 'package:provider/provider.dart';
 
 
@@ -11,6 +15,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (context) => AuthViewModel()),
         ChangeNotifierProvider(create: (context) => BrandViewModel()),
+        ChangeNotifierProvider(create: (context) => GameViewModel()),
       ],
       child: MyApp(),
     ),
@@ -26,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: QuizGame(),
+      home: LoginScreen(),
     );
   }
 }

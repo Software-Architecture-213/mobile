@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobile/views/auth/login/login_screen.dart';
 import 'package:mobile/views/auth/otp/otp_dialog.dart';
 import 'package:mobile/views/auth/register/widgets/textformfield_register.dart';
 import 'package:provider/provider.dart';
@@ -10,16 +11,15 @@ import '../../../utils/validators/confirm_password_validator.dart';
 import '../../../utils/validators/email_validator.dart';
 import '../../../utils/validators/password_validator.dart';
 import '../../../viewmodels/auth_viewmodel.dart';
-import '../Login/login_screen.dart';
 import '../Login/widgets/dropdown.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
   @override
-  State<Register> createState() => _registerState();
+  State<RegisterScreen> createState() => _registerState();
 }
 
-class _registerState extends State<Register> {
+class _registerState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
@@ -267,7 +267,7 @@ class _registerState extends State<Register> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
+                                    builder: (context) => LoginScreen()),
                               );
                             },
                             child: const Text(

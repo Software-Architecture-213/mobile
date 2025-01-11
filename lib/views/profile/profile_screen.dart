@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/response/user_response.dart';
+import 'package:mobile/views/my_item/my_item_screen.dart';
+import 'package:mobile/views/my_voucher/my_voucher_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../viewmodels/auth_viewmodel.dart';
+import '../favourite_promotion/favourite_screen.dart';
 import '../gift/gift_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -11,7 +14,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  late UserResponse user ;
+  UserResponse? user ;
   @override
   void initState() {
     // TODO: implement initState
@@ -43,7 +46,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   color: Colors.black)),
         ],
       ),
-      body: SingleChildScrollView(
+      body:
+      user == null
+          ? Center(child: CircularProgressIndicator())
+          :
+      SingleChildScrollView(
         child: Column(
           children: [
             CircleAvatar(
@@ -53,13 +60,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: 10),
             Text(
-              user.displayName,
+              user!.displayName,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 5),
-            Text(
-              'Ho Chi Minh, Vietnam',
-              style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
             SizedBox(height: 5),
             Row(
@@ -67,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Icon(Icons.phone, size: 18, color: Colors.grey),
                 SizedBox(width: 5),
-                Text(user.phoneNumber, style: TextStyle(color: Colors.grey)),
+                Text(user!.phoneNumber, style: TextStyle(color: Colors.grey)),
               ],
             ),
             SizedBox(height: 5),
@@ -76,7 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Icon(Icons.email, size: 18, color: Colors.grey),
                 SizedBox(width: 5),
-                Text(user.email, style: TextStyle(color: Colors.grey)),
+                Text(user!.email, style: TextStyle(color: Colors.grey)),
               ],
             ),
             SizedBox(height: 20),
@@ -116,6 +118,60 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: Icon(Icons.card_giftcard, color: Colors.orange),
               title: Text('My Vouchers'),
               trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyVoucherScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.favorite, color: Colors.orange),
+              title: Text('Favorite Promotions'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FavouriteScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.extension, color: Colors.orange),
+              title: Text('My items'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyItemScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.history, color: Colors.orange),
+              title: Text('Gift History'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyGiftHistory()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.share, color: Colors.orange),
+              title: Text('Tell your friends'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+            ),
+            ListTile(
+              leading: Icon(Icons.support, color: Colors.orange),
+              title: Text('Support'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings, color: Colors.orange),
+              title: Text('Settings'),
+              trailing: Icon(Icons.arrow_forward_ios, size: 16),
             ),
             ListTile(
               leading: Icon(Icons.extension, color: Colors.orange),
@@ -139,42 +195,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Icon(Icons.arrow_forward_ios, size: 16),
                 ],
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.history, color: Colors.orange),
-              title: Text('Gift History'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyGiftHistory()),
-                );
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.favorite, color: Colors.orange),
-              title: Text('Your Favorites'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            ),
-            ListTile(
-              leading: Icon(Icons.payment, color: Colors.orange),
-              title: Text('Payment'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            ),
-            ListTile(
-              leading: Icon(Icons.share, color: Colors.orange),
-              title: Text('Tell your friends'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            ),
-            ListTile(
-              leading: Icon(Icons.support, color: Colors.orange),
-              title: Text('Support'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
-            ),
-            ListTile(
-              leading: Icon(Icons.settings, color: Colors.orange),
-              title: Text('Settings'),
-              trailing: Icon(Icons.arrow_forward_ios, size: 16),
             ),
             ListTile(
               leading: Icon(Icons.logout, color: Colors.orange),

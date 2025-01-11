@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../../viewmodels/auth_viewmodel.dart';
 import '../Login/login_screen.dart';
 
@@ -35,7 +34,7 @@ void showOtpDialog(BuildContext context, String email) {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => LoginPage()),
+                      builder: (context) => LoginScreen()),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -12,6 +12,8 @@ import 'package:provider/provider.dart';
 import '../../utils/websocket/promotion_websocket.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/brand_viewmodel.dart';
+import '../notification/notification_screen.dart';
+import '../promotion_detail/promotion_detail_screen.dart';
 import '../voucher_detail/voucher_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -144,14 +146,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         child: Row(
                           children: brandViewModel.promotions.map((promotion) {
-                            return Padding(
-                              padding: const EdgeInsets.only(right: 8.0),
-                              child: PromotionCard(
-                                promotionId:  promotion.id,
-                                title:  promotion.name,
-                                field: promotion.description ?? '',
-                                status: promotion.status,
-                                image: promotion.imageUrl!,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PromotionDetailScreen(promotion: promotion),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: PromotionCard(
+                                  promotionId:  promotion.id,
+                                  title:  promotion.name,
+                                  field: promotion.description ?? '',
+                                  status: promotion.status,
+                                  image: promotion.imageUrl!,
+                                ),
                               ),
                             );
                           }).toList(),
@@ -255,7 +267,8 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => FavouriteScreen()),
+          builder: (context) => NotificationScreen(messagesStream: _webSocket.messages.cast<String>()),
+        ),
       );
     }
     else if(index == 3) {

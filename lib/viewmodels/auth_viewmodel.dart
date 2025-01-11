@@ -6,10 +6,13 @@ import '../models/user.dart';
 
 class AuthViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
+
+  UserResponse? user;
   bool isLoadingRegister = false;
   bool isLoadingLogin = false;
   bool isLoadingGenerateOtp = false;
   bool isLoadingValidateOtp = false;
+
   Future<ApiResponse> register(User user) async {
     isLoadingRegister = true;
     final response = await _authService.register(user);
@@ -43,7 +46,8 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<UserResponse> getProfile() async {
-    return await _authService.getProfile();
+    user =  await _authService.getProfile();
+    return user!;
   }
 
 }

@@ -1,27 +1,39 @@
 import 'package:flutter/material.dart';
 
-class MyGiftHistory extends StatelessWidget {
-  const MyGiftHistory({super.key});
+class NotificationScreen extends StatefulWidget {
+  final Stream<String> messagesStream;
+
+  const NotificationScreen({super.key, required this.messagesStream});
+
+  @override
+  _NotificationScreenState createState() => _NotificationScreenState();
+}
+
+class _NotificationScreenState extends State<NotificationScreen> {
+  List<Map<String, String>> historyItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print('Subscribing to messagesStream');
+    widget.messagesStream.listen((message) {
+      print('Received message: $message'); // Debugging line
+      setState(() {
+        historyItems.add({
+          "title": "New Notification",
+          "email": "example@example.com",
+          "piece": "New piece",
+          "time": DateTime.now().toString(),
+        });
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Mock data
-    final List<Map<String, String>> historyItems = List.generate(
-      12,
-          (index) => {
-        "image": "assets/reward1.png",
-        "title": "Bạn vừa nhận một mảnh ghép từ",
-        "email": "a@g.com",
-        "piece": "piece_${index + 1}",
-        "time": index < 2
-            ? "Thursday, March 9th 2023, 2:${17 - index}:27 am"
-            : "Wednesday, March 8th 2023, 10:23:00 pm",
-      },
-    );
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Gift History'),
+        title: const Text('Notifications'),
         backgroundColor: Color(0xFFF4D7AB),
       ),
       body: Padding(
@@ -29,11 +41,6 @@ class MyGiftHistory extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "12 Items",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
             Expanded(
               child: ListView.builder(
                 itemCount: historyItems.length,
@@ -51,7 +58,7 @@ class MyGiftHistory extends StatelessWidget {
                           ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.asset(
-                              item["image"]!,
+                              "assets/notification.png",
                               width: 50,
                               height: 50,
                               fit: BoxFit.cover,

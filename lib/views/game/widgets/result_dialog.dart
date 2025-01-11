@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/views/game/quiz/quiz_game.dart';
 
-void showResultDialog(BuildContext context) {
+void showResultDialog(BuildContext context, String gameId, int correctAnswersCount, int totalQuestions) {
   showDialog(
     context: context,
     builder: (context) => Center(
@@ -17,17 +18,17 @@ void showResultDialog(BuildContext context) {
             const Text(
               'Congratulations!',
               style: TextStyle(
-                fontSize: 22,
+                fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
             const SizedBox(height: 16),
             RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 children: [
                   TextSpan(
-                    text: '3',
+                    text: '$correctAnswersCount',
                     style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,
@@ -35,7 +36,7 @@ void showResultDialog(BuildContext context) {
                     ),
                   ),
                   TextSpan(
-                    text: ' / 5',
+                    text: ' / $totalQuestions',
                     style: TextStyle(
                       fontSize: 22,
                       color: Colors.black,
@@ -47,7 +48,7 @@ void showResultDialog(BuildContext context) {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Close dialog
+
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -56,7 +57,7 @@ void showResultDialog(BuildContext context) {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Voucher'),
+              child: const Text('Voucher', style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -70,7 +71,14 @@ void showResultDialog(BuildContext context) {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Retry Quiz'),
+              child:  GestureDetector(
+                onTap: (){
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => QuizGameApp(gameId: gameId)),
+                  );
+                },
+                  child: Text('Retry Quiz',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
@@ -84,7 +92,7 @@ void showResultDialog(BuildContext context) {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Return'),
+              child: const Text('Return',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
           ],
         ),

@@ -97,9 +97,6 @@ class _PromotionCardState extends State<PromotionCard> {
                         setState(() {
                           isFavourite = !isFavourite;
                         });
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Added to favourites')),
-                        );
                       } catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Failed to add to favourites')),

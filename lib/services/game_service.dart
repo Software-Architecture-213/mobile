@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../models/game.dart';
+import '../models/quiz_game.dart';
 import '../utils/dio/dio_game.dart';
 
 class GameService{
@@ -42,4 +43,18 @@ class GameService{
       throw Exception('Failed to load game by id: $e');
     }
   }
+  Future<List<QuizGame>> getQuizByGameId(String gameId) async {
+    try {
+      final response = await dio.get('/quizQuestions/games/$gameId');
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['data'];
+        return data.map((json) => QuizGame.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load quiz game by game id');
+      }
+    } catch (e) {
+      throw Exception('Failed to load quiz game by game id: $e');
+    }
+  }
+
 }

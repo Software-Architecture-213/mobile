@@ -39,7 +39,7 @@ class Promotion {
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       description: json['description'] ?? '',
-      imageUrl: json['imageUrl'] ,
+      imageUrl: json['imageUrl'] ?? '',
       startDate: DateTime.parse(json['startDate']),
       endDate: DateTime.parse(json['endDate']),
       brandId: json['brandId'] ?? '',
@@ -49,7 +49,9 @@ class Promotion {
       vouchers: json['vouchers'] != null
           ? List<Voucher>.from(json['vouchers'].map((v) => Voucher.fromJson(v)))
           : null,
-      games: json['games'] != null ? List<Game>.from(json['games']) : null,
+      games: json['games'] != null
+          ? List<Game>.from(json['games'].map((g) => Game.fromJson(g['data'])))
+          : null,
       createdAt: DateTime.parse(json['createAt']),
       updatedAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
     );
@@ -68,7 +70,7 @@ class Promotion {
       'remainingBudget': remainingBudget,
       'status': status,
       'vouchers': vouchers?.map((v) => v.toJson()).toList(),
-      'games': games,
+      'games': games?.map((g) => g.toJson()).toList(),
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
     };
