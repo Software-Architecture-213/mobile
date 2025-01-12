@@ -1,31 +1,32 @@
+import 'item.dart';
+
 class ItemTransaction {
-  String? id; // Transaction ID
-  String? senderId; // Người gửi
-  String? receiverId; // Người nhận
-  String? itemId; // Vật phẩm được gửi
+  String id; // Transaction ID
+  String senderId; // Người gửi
+  String receiverId; // Người nhận
+  Item item; // Vật phẩm được gửi
   DateTime? expiredAt; // Ngày hết hạn
   String status; // Trạng thái giao dịch
   DateTime createdAt; // Ngày gửi
-  DateTime updatedAt; // Ngày cập nhật
+  DateTime? updatedAt; // Ngày cập nhật
 
   ItemTransaction({
-    this.id,
-    this.senderId,
-    this.receiverId,
-    this.itemId,
+    required this.id,
+    required this.senderId,
+    required this.receiverId,
+    required this.item,
     this.expiredAt,
     this.status = 'pending',
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+    required this.createdAt,
+    this.updatedAt,
+  })  ;
 
   factory ItemTransaction.fromJson(Map<String, dynamic> json) {
     return ItemTransaction(
       id: json['_id'],
       senderId: json['senderId'],
       receiverId: json['receiverId'],
-      itemId: json['itemId'],
+      item: Item.fromJson(json['item']),
       expiredAt: json['expiredAt'] != null ? DateTime.parse(json['expiredAt']) : null,
       status: json['status'] ?? 'pending',
       createdAt: DateTime.parse(json['createdAt']),
@@ -38,11 +39,11 @@ class ItemTransaction {
       '_id': id,
       'senderId': senderId,
       'receiverId': receiverId,
-      'itemId': itemId,
+      'item': item.toJson(),
       'expiredAt': expiredAt?.toIso8601String(),
       'status': status,
       'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

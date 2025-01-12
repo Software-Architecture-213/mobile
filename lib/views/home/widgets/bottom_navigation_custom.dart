@@ -22,7 +22,8 @@ class CustomBottomNavigation extends StatelessWidget {
           label: 'Home',
         ),
         NavigationDestination(
-          icon: Badge(label: Text('2'),child: Icon(Icons.wallet_giftcard)),
+          // icon: Badge(label: Text('2'),child: Icon(Icons.wallet_giftcard)),
+          icon: Icon(Icons.wallet_giftcard),
           label: 'Vouchers',
         ),
         NavigationDestination(

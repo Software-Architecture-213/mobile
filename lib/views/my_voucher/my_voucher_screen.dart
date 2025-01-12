@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+  import 'package:flutter/material.dart';
 import 'package:mobile/models/user_voucher.dart';
 import 'package:provider/provider.dart';
 
@@ -92,7 +92,7 @@ class _MyVoucherScreenState extends State<MyVoucherScreen> {
                                     const SizedBox(height: 4),
                                     // Piece name
                                     Text(
-                                      "Value: " + voucher.voucher.value.toString(),
+                                      "Code: " + voucher.voucher.code.toString(),
                                       style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 12,

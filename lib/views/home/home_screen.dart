@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/response/user_response.dart';
-import 'package:mobile/views/favourite_promotion/favourite_screen.dart';
 import 'package:mobile/views/home/widgets/bottom_navigation_custom.dart';
 import 'package:mobile/views/home/widgets/campaign_card.dart';
 import 'package:mobile/views/home/widgets/invite_card.dart';
@@ -171,8 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 20),
-                  buildInviteCard(),
+
                   SizedBox(height: 10),
                   buildSectionHeader(context,'Vouchers', 'See all', 'voucher'),
                   SizedBox(height: 10),
@@ -210,6 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                   SizedBox(height: 20),
+                  buildInviteCard(),
+                  SizedBox(height: 10),
                   buildSectionHeader(context,'Brands', 'See all', 'brand'),
                   SizedBox(height: 10),
                   Consumer<BrandViewModel>(

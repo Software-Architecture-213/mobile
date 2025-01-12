@@ -189,16 +189,16 @@ class _BodyWidgetState extends State<BodyWidget> {
                           onPressed: () {
                             _login(context);
                           },
-                          child: const Center(
-                            child: Text(
+                        child: Center(
+                              child: Text(
                               "Login",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
                               ),
+                                                        ),
                             ),
-                          ),
                         ),
                       ),
                     ],

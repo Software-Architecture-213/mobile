@@ -30,7 +30,7 @@ class _registerState extends State<RegisterScreen> {
   DateTime? _selectedDate;
   late String _email, _password;
   final _formKey = GlobalKey<FormState>();
-  String _role = Role.user;
+  //String _role = Role.user;
   String _gender = Gender.male;
   void _createAccount(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
@@ -40,7 +40,7 @@ class _registerState extends State<RegisterScreen> {
         displayName: _displayNameController.text,
         phoneNumber: getFullPhoneNumber(),
         dateOfBirth: _selectedDate,
-        role: _role,
+        role: "USER",
         gender: _gender,
       );
 
@@ -207,16 +207,16 @@ class _registerState extends State<RegisterScreen> {
                       ),
 
                       const SizedBox(height: 15),
-                      EnumDropdownButtonFormField<String>(
-                        labelText: "Role",
-                        value: _role,
-                        items: [Role.user, Role.admin, Role.branch],
-                        onChanged: (value) {
-                          setState(() {
-                            _role = value!;
-                          });
-                        },
-                      ),
+                      // EnumDropdownButtonFormField<String>(
+                      //   labelText: "Role",
+                      //   value: _role,
+                      //   items: [Role.user, Role.admin, Role.branch],
+                      //   onChanged: (value) {
+                      //     setState(() {
+                      //       _role = value!;
+                      //     });
+                      //   },
+                      // ),
                       const SizedBox(height: 15),
                       EnumDropdownButtonFormField<String>(
                         labelText: "Gender",

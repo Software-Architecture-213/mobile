@@ -111,6 +111,4 @@ class _CampaignPageState extends State<CampaignPage> {
       ),
     );
   }
-
-
 }

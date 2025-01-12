@@ -49,5 +49,11 @@ class AuthViewModel extends ChangeNotifier {
     user =  await _authService.getProfile();
     return user!;
   }
+  //logout
+  Future<void> logout() async {
+    await _authService.logout();
+    user = null;
+    notifyListeners();
+  }
 
 }
