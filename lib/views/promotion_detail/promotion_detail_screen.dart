@@ -4,13 +4,24 @@ import 'package:provider/provider.dart';
 import '../../models/promotion.dart';
 import '../../viewmodels/brand_viewmodel.dart';
 import '../../viewmodels/game_viewmodel.dart';
+import '../exchange_voucher/exchange_voucher_screen.dart';
 import '../game/quiz/quiz_game.dart';
 import '../game/shake/shake_game.dart';
 
-class PromotionDetailScreen extends StatelessWidget {
+class PromotionDetailScreen extends StatefulWidget {
   final Promotion promotion;
-
   PromotionDetailScreen({required this.promotion});
+  @override
+  State<StatefulWidget> createState() => _PromotionDetailScreenState();
+}
+
+class _PromotionDetailScreenState extends State<PromotionDetailScreen>{
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<BrandViewModel>(context, listen: false).getRandomVoucherByPromotionId(widget.promotion.id);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +91,7 @@ class PromotionDetailScreen extends StatelessWidget {
                   Icon(Icons.calendar_today, color: Colors.blue),
                   SizedBox(width: 8),
                   Text(
-                    "Exp date:  ${promotion.endDate.toIso8601String().substring(0, 10)}",
+                    "Exp date:  ${widget.promotion.endDate.toIso8601String().substring(0, 10)}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -93,7 +104,7 @@ class PromotionDetailScreen extends StatelessWidget {
                   Icon(Icons.access_time, color: Colors.blue),
                   SizedBox(width: 8),
                   Text(
-                    "Status:  ${promotion.status}",
+                    "Status:  ${widget.promotion.status}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -107,7 +118,7 @@ class PromotionDetailScreen extends StatelessWidget {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: promotion.games!.map((game) {
+                  children: widget.promotion.games!.map((game) {
                     return GestureDetector(
                       onTap: () async {
                         if (game.type == 'shake') {
@@ -165,7 +176,7 @@ class PromotionDetailScreen extends StatelessWidget {
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
-                  children: promotion.vouchers!.map((voucher) {
+                  children: widget.promotion.vouchers!.map((voucher) {
                     return Container(
                       width: 200,
                       child: Padding(
@@ -209,21 +220,28 @@ class PromotionDetailScreen extends StatelessWidget {
               ),
               SizedBox(height: 8),
               Text(
-                promotion.description ??  "This voucher can be used for discounts on select items. "
+                widget.promotion.description ??  "This voucher can be used for discounts on select items. "
                     "Ensure to redeem it before the expiration date.",
                 style: TextStyle(color: Colors.black54),
               ),
               SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ExchangeVoucherScreen(promotion: widget.promotion),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orangeAccent,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Play Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14),),
+                      Text("EXCHANGE VOUCHER",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14),),
                       SizedBox(width: 8),
                       Icon(Icons.arrow_forward,color: Colors.black,size: 16,),
                     ],

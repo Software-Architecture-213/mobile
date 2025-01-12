@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:mobile/utils/dio/dio_brand.dart';
-import '../models/promotion.dart';
 import '../models/user_voucher.dart';
 import '../models/voucher.dart';
 import 'auth_service.dart';
@@ -54,5 +53,40 @@ class VoucherService{
       throw Exception('Failed to load voucher: $e');
     }
   }
-
+  Future<Voucher> getRandomVoucherByPromotionId(String promotionId) async {
+    try {
+      final response = await dio.get('/promotions/$promotionId/random/voucher');
+      if (response.statusCode == 200) {
+        return Voucher.fromJson(response.data);
+      } else {
+        throw Exception('Failed to load random voucher');
+      }
+    } catch (e) {
+      throw Exception('Failed to load random voucher: $e');
+    }
+  }
+  Future<UserVoucher> createUserVoucher(String voucherId) async {
+    try {
+      final token = await AuthService().getToken();
+      final response = await dio.post(
+        '/vouchers/voucher/me',
+        data: {
+          'voucherId': voucherId,
+          'status': 'ACTIVE',
+        },
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $token',
+          },
+        ),
+      );
+      if (response.statusCode == 200) {
+        return UserVoucher.fromJson(response.data);
+      } else {
+        throw Exception('Failed to create user voucher');
+      }
+    } catch (e) {
+      throw Exception('Failed to create user voucher: $e');
+    }
+  }
 }

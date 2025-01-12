@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/convention_rule_response.dart';
 import 'package:mobile/models/user_voucher.dart';
 import 'package:mobile/models/voucher.dart';
 import 'package:mobile/services/promotion_service.dart';
@@ -6,11 +7,13 @@ import 'package:mobile/services/voucher_service.dart';
 import '../models/brand.dart';
 import '../models/promotion.dart';
 import '../services/brand_service.dart';
+import '../services/convention_rule_service.dart';
 
 class BrandViewModel extends ChangeNotifier {
   final BrandService _brandService = BrandService();
   final PromotionService _promotionService = PromotionService();
   final VoucherService _voucherService = VoucherService();
+  final ConventionRuleService _conventionRuleService = ConventionRuleService();
 
   List<Brand> _brands = [];
   List<Brand> get brands => _brands;
@@ -23,6 +26,11 @@ class BrandViewModel extends ChangeNotifier {
 
   List<UserVoucher> _myVouchers = [];
   List<UserVoucher> get myVouchers => _myVouchers;
+
+  ConversionRuleResponse? _conversionRule;
+
+  Voucher? _randomVoucher;
+  Voucher? get randomVoucher => _randomVoucher;
 
   bool isLoadingBrand = false;
   bool isLoadingPromotion = false;
@@ -55,5 +63,18 @@ class BrandViewModel extends ChangeNotifier {
   }
   Future<void> addFavourite(String promotionId) async {
     await _promotionService.addFavourite(promotionId);
+    notifyListeners();
+  }
+  Future<void> getConversionRuleByPromotionId(String promotionId) async {
+    _conversionRule = await _conventionRuleService.getConventionRuleByPromotionId(promotionId);
+    notifyListeners();
+  }
+  Future<void> getRandomVoucherByPromotionId(String promotionId) async {
+    _randomVoucher = await _voucherService.getRandomVoucherByPromotionId(promotionId);
+    notifyListeners();
+  }
+  Future<void> createUserVoucher(String voucherId) async {
+      await _voucherService.createUserVoucher(voucherId);
+      notifyListeners();
   }
 }

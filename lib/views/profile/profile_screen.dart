@@ -5,8 +5,9 @@ import 'package:mobile/views/my_voucher/my_voucher_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../viewmodels/auth_viewmodel.dart';
+import '../auth/Login/login_screen.dart';
 import '../favourite_promotion/favourite_screen.dart';
-import '../gift/gift_screen.dart';
+import '../gift_history/gift_history_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -200,10 +201,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: Icon(Icons.logout, color: Colors.orange),
               title: Text('Log out'),
               trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              onTap: () => _logout(context),
             ),
           ],
         ),
       ),
+    );
+  }
+  void _logout(BuildContext context) async {
+    await Provider.of<AuthViewModel>(context, listen: false).logout();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (Route<dynamic> route) => false,
     );
   }
 }

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/views/game/quiz/quiz_game.dart';
+import 'package:mobile/views/game/widgets/voucher_gift.dart';
+import 'package:mobile/views/home/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void showResultDialog(BuildContext context, String gameId, int correctAnswersCount, int totalQuestions) {
   showDialog(
@@ -48,7 +51,12 @@ void showResultDialog(BuildContext context, String gameId, int correctAnswersCou
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => VoucherGift(),
+                  ),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -62,7 +70,10 @@ void showResultDialog(BuildContext context, String gameId, int correctAnswersCou
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Close dialog
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => QuizGameApp(gameId: gameId)),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -71,19 +82,15 @@ void showResultDialog(BuildContext context, String gameId, int correctAnswersCou
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child:  GestureDetector(
-                onTap: (){
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => QuizGameApp(gameId: gameId)),
-                  );
-                },
-                  child: Text('Retry Quiz',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold))),
+              child:  Text('Retry Quiz',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
             const SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context); // Close dialog
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeScreen()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
@@ -92,7 +99,7 @@ void showResultDialog(BuildContext context, String gameId, int correctAnswersCou
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text('Return',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
+              child: const Text('Quit',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold)),
             ),
           ],
         ),

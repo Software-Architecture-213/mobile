@@ -1,4 +1,5 @@
 import 'package:mobile/models/item.dart';
+import 'package:mobile/models/item_transaction.dart';
 import 'package:mobile/models/item_user.dart';
 import '../utils/dio/dio_game.dart';
 
@@ -56,7 +57,7 @@ class ItemService{
           'quantity': quantity,
         },
       );
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         return ItemUser.fromJson(response.data);
       } else {
         throw Exception('Failed to create item user');
@@ -65,4 +66,18 @@ class ItemService{
       throw Exception('Failed to create item user: $e');
     }
   }
+  Future<List<ItemTransaction>> getAllItemTransactionsByUserId(String userId) async {
+    try {
+      final response = await dio.get('/itemTransactions/user/$userId');
+      if (response.statusCode == 200) {
+        List<dynamic> data = response.data['data'];
+        return data.map((json) => ItemTransaction.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load item transactions by user id');
+      }
+    } catch (e) {
+      throw Exception('Failed to load transactions by user id: $e');
+    }
+  }
+
 }

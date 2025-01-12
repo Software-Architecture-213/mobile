@@ -4,6 +4,7 @@ import 'dart:async';
 
 import '../../../models/promotion.dart';
 import '../../../models/quiz_game.dart';
+import '../../../viewmodels/brand_viewmodel.dart';
 import '../../../viewmodels/game_viewmodel.dart';
 import '../widgets/result_dialog.dart';
 

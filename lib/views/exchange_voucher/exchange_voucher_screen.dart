@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/views/constant/bottom_sheet.dart';
-class PuzzleScreen extends StatelessWidget {
+import 'package:provider/provider.dart';
+
+import '../../models/promotion.dart';
+import '../../viewmodels/brand_viewmodel.dart';
+class ExchangeVoucherScreen extends StatefulWidget {
+  final Promotion promotion;
+  ExchangeVoucherScreen({required this.promotion});
+  @override
+  State<StatefulWidget> createState() => _ExchangeVoucherScreenState();
+}
+
+class _ExchangeVoucherScreenState extends State<ExchangeVoucherScreen>{
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<BrandViewModel>(context, listen: false).getConversionRuleByPromotionId(widget.promotion.id);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('Puzzle Game',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),)),
+        title: Center(child: Text('Exchange Voucher',style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),)),
       ),
       body: Center(
         child: Container(

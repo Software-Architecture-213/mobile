@@ -17,7 +17,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     super.initState();
     print('Subscribing to messagesStream');
     widget.messagesStream.listen((message) {
-      print('Received message: $message'); // Debugging line
+      print('Received message: $message');
       setState(() {
         historyItems.add({
           "title": "New Notification",
