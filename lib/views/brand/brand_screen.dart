@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/services/notification.dart';
 import 'package:mobile/views/brand/widgets/campaign_item.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/brand_viewmodel.dart';
@@ -15,13 +14,7 @@ class _CampaignPageState extends State<CampaignPage> {
   @override
   void initState() {
     super.initState();
-    _notification();
     _fetchBrands();
-  }
-
-  void _notification() async {
-    final WebSocketService webSocketService = WebSocketService();
-    webSocketService.connectToWebSocket('123');
   }
 
   void _fetchBrands() async {

@@ -1,16 +1,15 @@
-import 'package:mobile/models/promotion.dart';
 import 'package:mobile/models/voucher.dart';
 
 class ConversionRuleResponse {
   String id;
-  //List<RequiredItem> requiredItems;
+  List<RequiredItem> requiredItems;
   Voucher voucher;
   //Promotion promotion;
 
 
   ConversionRuleResponse({
     required this.id,
-    //required this.requiredItems,
+    required this.requiredItems,
     required this.voucher,
     //required this.promotion,
   })  ;
@@ -18,9 +17,9 @@ class ConversionRuleResponse {
   factory ConversionRuleResponse.fromJson(Map<String, dynamic> json) {
     return ConversionRuleResponse(
       id: json['id'],
-      // requiredItems: (json['items'] as List)
-      //     .map((item) => RequiredItem.fromJson(item))
-      //     .toList(),
+      requiredItems: (json['items'] as List)
+          .map((item) => RequiredItem.fromJson(item))
+          .toList(),
       voucher: Voucher.fromJson(json['voucher']),
       //promotion: Promotion.fromJson(json['promotion']),
     );

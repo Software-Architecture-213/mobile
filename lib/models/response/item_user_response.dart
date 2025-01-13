@@ -1,6 +1,7 @@
-import 'item.dart';
 
-class ItemUser {
+import '../item.dart';
+
+class ItemUserResponse {
   String id;
   String userId;
   Item? item;
@@ -9,7 +10,7 @@ class ItemUser {
   DateTime createdAt;
   DateTime? updatedAt;
 
-  ItemUser({
+  ItemUserResponse({
     required this.id,
     required this.userId,
     this.item,
@@ -19,11 +20,11 @@ class ItemUser {
     this.updatedAt,
   }) ;
 
-  factory ItemUser.fromJson(Map<String, dynamic> json) {
-    return ItemUser(
+  factory ItemUserResponse.fromJson(Map<String, dynamic> json) {
+    return ItemUserResponse(
       id: json['_id'],
       userId: json['userId'],
-      item: json['itemId'] != null ? Item.fromJson(json['itemId']) : null,
+      item: json['item'] != null ? Item.fromJson(json['item']) : null,
       gameId: json['gameId'] ?? '',
       quantity: json['quantity'] ?? 1,
       createdAt: DateTime.parse(json['createdAt']),
@@ -35,7 +36,7 @@ class ItemUser {
     return {
       '_id': id,
       'userId': userId,
-      'itemId': item,
+      'item': item,
       'gameId': gameId,
       'quantity': quantity,
       'createdAt': createdAt.toIso8601String(),

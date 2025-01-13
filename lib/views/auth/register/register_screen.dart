@@ -107,20 +107,33 @@ class _registerState extends State<RegisterScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                Image.asset(
-                  "assets/icon_register_stock.png",
+                Container(
+                  height: 100,
+                  width: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle, // Đặt hình dạng là hình tròn
+                    border: Border.all(
+                      color: Colors.orange, // Màu viền
+                      width: 1.0, // Độ dày của viền
+                    ),
+                  ),
+                  child: ClipOval(
+                    child: Image.asset(
+                      "assets/logo.png",
+                    ),
+                  ),
                 ),
                 const Text(
                   "Welcome back!",
                   style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Color.fromRGBO(92, 96, 239, 1.0)),
+                      color: Colors.orange),
                 ),
                 const Text(
                   "Let's Create Your Account",
                   style: TextStyle(
-                      fontSize: 22, color: Color.fromRGBO(92, 96, 239, 1.0)),
+                      fontSize: 22, color: Colors.orange),
                 ),
                 const SizedBox(
                   height: 30,
@@ -217,7 +230,6 @@ class _registerState extends State<RegisterScreen> {
                       //     });
                       //   },
                       // ),
-                      const SizedBox(height: 15),
                       EnumDropdownButtonFormField<String>(
                         labelText: "Gender",
                         value: _gender,
@@ -236,7 +248,7 @@ class _registerState extends State<RegisterScreen> {
                           height: 50,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Color.fromRGBO(143, 148, 251, 1),
+                              backgroundColor: Colors.orangeAccent[200],
                             ),
                             onPressed: () {
                               _createAccount(context);
@@ -248,8 +260,8 @@ class _registerState extends State<RegisterScreen> {
                                 :
                             const Text("Create Account",
                                 style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 17,
+                                    color: Colors.black87,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.bold)),
                           ),
                         ),
@@ -259,7 +271,7 @@ class _registerState extends State<RegisterScreen> {
                         children: [
                           const Text("Already a User?",
                               style: TextStyle(
-                                color: Color.fromRGBO(62, 81, 211, 1.0),
+                                color: Colors.grey,
                                 fontSize: 18,
                               )),
                           TextButton(
@@ -273,7 +285,7 @@ class _registerState extends State<RegisterScreen> {
                             child: const Text(
                               "Login now",
                               style: TextStyle(
-                                  color: Color.fromRGBO(33, 39, 225, 1.0),
+                                  color: Colors.black87,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                             ),

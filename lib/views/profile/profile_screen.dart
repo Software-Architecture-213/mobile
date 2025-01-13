@@ -3,11 +3,10 @@ import 'package:mobile/models/response/user_response.dart';
 import 'package:mobile/views/my_item/my_item_screen.dart';
 import 'package:mobile/views/my_voucher/my_voucher_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../../viewmodels/auth_viewmodel.dart';
 import '../auth/Login/login_screen.dart';
 import '../favourite_promotion/favourite_screen.dart';
-import '../gift_history/gift_history_screen.dart';
+import '../transaction_history/transaction_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -56,8 +55,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             CircleAvatar(
               radius: 40,
-              backgroundImage: NetworkImage(
-                  'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'), // Thay bằng ảnh của bạn
+              backgroundImage: user?.photoUrl != null
+            ? NetworkImage(user!.photoUrl!)
+            : NetworkImage(
+                  'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'),
             ),
             SizedBox(height: 10),
             Text(
@@ -80,6 +81,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Icon(Icons.email, size: 18, color: Colors.grey),
                 SizedBox(width: 5),
                 Text(user!.email, style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+            SizedBox(height: 5),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.person, size: 18, color: Colors.grey),
+                SizedBox(width: 5),
+                Text(user!.userId, style: TextStyle(color: Colors.grey)),
               ],
             ),
             SizedBox(height: 20),
@@ -150,12 +160,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             ListTile(
               leading: Icon(Icons.history, color: Colors.orange),
-              title: Text('Gift History'),
+              title: Text('Transaction History'),
               trailing: Icon(Icons.arrow_forward_ios, size: 16),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => MyGiftHistory()),
+                  MaterialPageRoute(builder: (context) => TransactionHistory()),
                 );
               },
             ),

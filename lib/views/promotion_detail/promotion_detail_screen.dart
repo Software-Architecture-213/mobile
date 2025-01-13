@@ -88,7 +88,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen>{
               SizedBox(height: 16),
               Row(
                 children: [
-                  Icon(Icons.calendar_today, color: Colors.blue),
+                  Icon(Icons.calendar_today, color: Colors.orange),
                   SizedBox(width: 8),
                   Text(
                     "Exp date:  ${widget.promotion.endDate.toIso8601String().substring(0, 10)}",
@@ -101,7 +101,7 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen>{
               ),
               Row(
                 children: [
-                  Icon(Icons.access_time, color: Colors.blue),
+                  Icon(Icons.access_time, color: Colors.orange),
                   SizedBox(width: 8),
                   Text(
                     "Status:  ${widget.promotion.status}",

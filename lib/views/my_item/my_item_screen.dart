@@ -36,29 +36,29 @@ class _MyItemScreenState extends State<MyItemScreen> {
       ),
       body: Consumer<GameViewModel>(
           builder: (context, gameViewModel, child) {
-            return GestureDetector(
-              onTap: () {
-                showPuzzleBottomSheet(context, 1);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        "${gameViewModel.items.length} item",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      "${gameViewModel.items.length} item",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(height: 8),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: gameViewModel.items.length,
-                        itemBuilder: (context, index) {
-                          ItemUser item = gameViewModel.items[index];
-                          return Card(
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: gameViewModel.items.length,
+                      itemBuilder: (context, index) {
+                        ItemUser item = gameViewModel.items[index];
+                        return GestureDetector(
+                          onTap: () {
+                            showShareBottomSheet(context, item);
+                          },
+                          child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
@@ -116,7 +116,7 @@ class _MyItemScreenState extends State<MyItemScreen> {
                                         // Time
                                         if (item.item?.rarity != null)
                                           Text(
-                                            "Rarity: ${item.item!.rarity}",
+                                            "Quantity: ${item.quantity}",
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
@@ -129,12 +129,12 @@ class _MyItemScreenState extends State<MyItemScreen> {
                                 ],
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             );
           }

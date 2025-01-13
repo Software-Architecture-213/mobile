@@ -1,40 +1,35 @@
-class Notification {
-  String? userId; // User ID
+class NotificationModel {
   String message; // Message
-  String type; // Type of notification
+  String? type; // Type of notification
   bool isRead; // Read status
   DateTime createdAt; // Creation date
-  DateTime updatedAt; // Update date
+  DateTime? updatedAt; // Update date
 
-  Notification({
-    this.userId,
+  NotificationModel({
     required this.message,
-    required this.type,
+    this.type,
     this.isRead = false,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        updatedAt = updatedAt ?? DateTime.now();
+    required this.createdAt,
+    this.updatedAt,
+  }) ;
 
-  factory Notification.fromJson(Map<String, dynamic> json) {
-    return Notification(
-      userId: json['userId'],
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    return NotificationModel(
       message: json['message'],
-      type: json['type'],
+      type: json['type'] ?? '',
       isRead: json['isRead'] ?? false,
       createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      updatedAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
       'message': message,
       'type': type,
       'isRead': isRead,
       'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 }

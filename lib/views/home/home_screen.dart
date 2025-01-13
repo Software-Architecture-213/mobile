@@ -8,9 +8,11 @@ import 'package:mobile/views/home/widgets/section_header.dart';
 import 'package:mobile/views/profile/profile_screen.dart';
 import 'package:mobile/views/voucher/voucher_screen.dart';
 import 'package:provider/provider.dart';
+import '../../models/notification.dart';
 import '../../utils/websocket/promotion_websocket.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/brand_viewmodel.dart';
+import '../../viewmodels/notification_viewmodel.dart';
 import '../notification/notification_screen.dart';
 import '../promotion_detail/promotion_detail_screen.dart';
 import '../voucher_detail/voucher_detail_screen.dart';
@@ -40,7 +42,19 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _webSocket.messages.listen((message) {
       print('Received: $message');
-      // Handle the received message
+      final parts = message.split(' starts on ');
+      if (parts.length == 2) {
+        final promotionMessage = parts[0];
+        final createdAtString = parts[1];
+        final createdAt = DateTime.parse(createdAtString);
+
+        final notification = NotificationModel(
+          message: promotionMessage,
+          createdAt: createdAt,
+        );
+
+        Provider.of<NotificationViewmodel>(context, listen: false).addNotification(notification);
+      }
     });
   }
   @override
@@ -53,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.orange,
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,22 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               IconButton(
                 onPressed: () {},
-                icon: Icon(Icons.notifications, color: Colors.white),
-              ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.orange,
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    '5',
-                    style: TextStyle(fontSize: 12, color: Colors.white),
-                  ),
-                ),
+                icon: Icon(Icons.more_vert, color: Colors.white),
               ),
             ],
           ),
@@ -125,7 +125,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildCategoryButton('Restaurant', Icons.restaurant, Colors.green),
                   _buildCategoryButton('Car', Icons.directions_car, Colors.blue),
                   _buildCategoryButton('Shopping', Icons.shopping_bag, Colors.yellow),
-                  _buildCategoryButton('...', Icons.more_horiz, Colors.purple),
+                  _buildCategoryButton('Food', Icons.food_bank, Colors.purple),
                 ],
               ),
             ),
@@ -267,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => NotificationScreen(messagesStream: _webSocket.messages.cast<String>()),
+          builder: (context) => NotificationScreen(),
         ),
       );
     }

@@ -80,4 +80,13 @@ class GameViewModel extends ChangeNotifier {
     isLoadingItemTransaction = false;
     notifyListeners();
   }
+  Future<void> checkAndUpdate(String userId, String itemId, String gameId, int quantity) async {
+    await _itemService.checkAndUpdateItemUser(userId, itemId, gameId, quantity);
+    notifyListeners();
+  }
+  //create item transaction
+  Future<void> createItemTransaction(String senderId, String receiverId, String itemId, int quantity, String status) async {
+    await _itemService.createItemTransaction(senderId,receiverId, itemId, quantity, status);
+    notifyListeners();
+  }
 }

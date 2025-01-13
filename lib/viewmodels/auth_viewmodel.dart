@@ -8,6 +8,9 @@ class AuthViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
 
   UserResponse? user;
+
+  UserResponse? userReceiver;
+
   bool isLoadingRegister = false;
   bool isLoadingLogin = false;
   bool isLoadingGenerateOtp = false;
@@ -49,7 +52,12 @@ class AuthViewModel extends ChangeNotifier {
     user =  await _authService.getProfile();
     return user!;
   }
-  //logout
+
+  Future<UserResponse> getUserInfoByEmail(String email) async {
+    userReceiver =  await _authService.getUserInfoByEmail(email);
+    return userReceiver!;
+  }
+
   Future<void> logout() async {
     await _authService.logout();
     user = null;

@@ -5,12 +5,12 @@ import 'package:mobile/viewmodels/game_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 
-class MyGiftHistory extends StatefulWidget {
-  const MyGiftHistory({super.key});
+class TransactionHistory extends StatefulWidget {
+  const TransactionHistory({super.key});
   @override
-  State<StatefulWidget> createState() => _MyGiftHistoryState();
+  State<StatefulWidget> createState() => _TransactionHistoryState();
 }
-class _MyGiftHistoryState extends State<MyGiftHistory> {
+class _TransactionHistoryState extends State<TransactionHistory> {
   @override
   void initState() {
     super.initState();

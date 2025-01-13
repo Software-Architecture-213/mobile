@@ -28,7 +28,7 @@ class _BodyWidgetState extends State<BodyWidget> {
       TextEditingController(); //Controller cho email
   final TextEditingController _passwordController =
       TextEditingController(); //Controller cho password
-  final _formKey = GlobalKey<FormState>(); //Kiểm soát trạng thái của form
+  final _formKey = GlobalKey<FormState>();
   late String _email, _password;
   @override
   Widget build(BuildContext context) {
@@ -40,8 +40,9 @@ class _BodyWidgetState extends State<BodyWidget> {
               children: <Widget>[
                 Container(
                   height: MediaQuery.of(context).size.height / 2 - 60,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       image: DecorationImage(
+                          colorFilter: ColorFilter.mode(Colors.orangeAccent[200]!, BlendMode.srcIn),
                           image: AssetImage('assets/background.png'),
                           fit: BoxFit.fill)),
                   child: Stack(
@@ -84,8 +85,8 @@ class _BodyWidgetState extends State<BodyWidget> {
                             child: Text(
                               "Login",
                               style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 40,
+                                  color: Colors.black54,
+                                  fontSize: 60,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -105,7 +106,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                               borderRadius: BorderRadius.circular(10),
                               boxShadow: const [
                                 BoxShadow(
-                                    color: Color.fromRGBO(143, 148, 251, .2),
+                                    color: Color.fromRGBO(237, 144, 77, 0.2),
                                     blurRadius: 20.0,
                                     offset: Offset(0, 10))
                               ]),
@@ -157,7 +158,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                         children: [
                           const Text("Don\'t have an account ?",
                               style: TextStyle(
-                                color: Color.fromRGBO(143, 148, 251, 1),
+                                color: Colors.grey,
                               )),
                           TextButton(
                             onPressed: () {
@@ -170,7 +171,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                             child: const Text(
                               "Register",
                               style: TextStyle(
-                                  color: Color.fromRGBO(92, 96, 239, 1.0),
+                                  color: Colors.black,
                                   fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -184,7 +185,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color.fromRGBO(143, 148, 251, 1),
+                            backgroundColor: Colors.orangeAccent[100],
                           ),
                           onPressed: () {
                             _login(context);
@@ -193,9 +194,9 @@ class _BodyWidgetState extends State<BodyWidget> {
                               child: Text(
                               "Login",
                               style: TextStyle(
-                                color: Colors.white,
+                                color: Colors.black87,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16,
+                                fontSize: 20,
                               ),
                                                         ),
                             ),

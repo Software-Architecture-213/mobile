@@ -47,10 +47,10 @@ class VoucherService{
       if (response.statusCode == 200) {
         return Voucher.fromJson(response.data);
       } else {
-        throw Exception('Failed to load voucher');
+        throw Exception('Failed to load voucher by id');
       }
     } catch (e) {
-      throw Exception('Failed to load voucher: $e');
+      throw Exception('Failed to load voucher by id: $e');
     }
   }
   Future<Voucher> getRandomVoucherByPromotionId(String promotionId) async {
