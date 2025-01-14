@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/item_transaction.dart';
 import 'package:mobile/models/item_user.dart';
 import '../models/game.dart';
 import '../models/item.dart';
@@ -13,6 +14,7 @@ class GameViewModel extends ChangeNotifier {
   bool isLoadingGame = false;
   bool isLoadingQuizGame = false;
   bool isLoadingItem = false;
+  bool isLoadingItemTransaction = false;
 
   Item? _randomItem;
   Item? get randomItem => _randomItem;
@@ -25,6 +27,9 @@ class GameViewModel extends ChangeNotifier {
 
   List<ItemUser> _items = [];
   List<ItemUser> get items => _items;
+
+  List<ItemTransaction> _itemTransactions = [];
+  List<ItemTransaction> get itemTransactions => _itemTransactions;
 
   //Get all games
   Future<void> getAllGames() async {
@@ -64,5 +69,36 @@ class GameViewModel extends ChangeNotifier {
     } catch (e) {
       // Handle error
     }
+  }
+  Future<void> getUserGameByUserId(String userId) async {
+    await _gameService.getUserGameByUserId(userId);
+    notifyListeners();
+  }
+  Future<void> getItemTransactionsByUserId(String userId) async {
+    isLoadingItemTransaction = true;
+    _itemTransactions = await _itemService.getAllItemTransactionsByUserId(userId);
+    isLoadingItemTransaction = false;
+    notifyListeners();
+  }
+  Future<void> checkAndUpdate(String userId, String itemId, String gameId, int quantity) async {
+    await _itemService.checkAndUpdateItemUser(userId, itemId, gameId, quantity);
+    notifyListeners();
+  }
+  //create item transaction
+  Future<void> createItemTransaction(String senderId, String receiverId, String itemId, int quantity, String status) async {
+    await _itemService.createItemTransaction(senderId,receiverId, itemId, quantity, status);
+    notifyListeners();
+  }
+  //get game by promotion id
+  Future<List<Game>> getAllGamesByPromotionId(String promotionId) async {
+    _games =  await _gameService.getAllGamesByPromotionId(promotionId);
+    notifyListeners();
+    return _games;
+
+  }
+  //update item user
+  Future<void> updateItemUserByUserIdAndListItemId(String userId, List<String> items) async {
+    await _itemService.updateItemUserByUserIdAndListItemId(userId, items);
+    notifyListeners();
   }
 }

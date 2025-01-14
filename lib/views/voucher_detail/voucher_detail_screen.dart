@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/voucher.dart';
+import 'package:mobile/views/constant/game_screen.dart';
 
 class VoucherDetailScreen extends StatelessWidget {
   final Voucher voucher;
@@ -74,7 +75,7 @@ class VoucherDetailScreen extends StatelessWidget {
               Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Colors.blue.shade700,
+                  color: Colors.orangeAccent,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 padding: const EdgeInsets.all(16.0),
@@ -84,15 +85,14 @@ class VoucherDetailScreen extends StatelessWidget {
                     Text(
                       'COUPON',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(height: 16),
                     Text(
                       'SAVE ${voucher.value}%',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
@@ -103,7 +103,7 @@ class VoucherDetailScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Code: ${voucher.code}',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
                         ),
                         Container(
                           decoration: BoxDecoration(
@@ -112,7 +112,7 @@ class VoucherDetailScreen extends StatelessWidget {
                           ),
                           height: 50,
                           width: 100,
-                          child: Center(child: Text('Barcode')),
+                          child: Center(child: Text('QR Code',style: TextStyle(fontWeight: FontWeight.bold),)),
                         ),
                       ],
                     ),
@@ -124,37 +124,26 @@ class VoucherDetailScreen extends StatelessWidget {
               // Remaining Voucher Info
               Row(
                 children: [
-                  Icon(Icons.videogame_asset, color: Colors.blue),
+                  Icon(Icons.videogame_asset, color: Colors.orange),
                   SizedBox(width: 8),
                   Text(
-                    "Remain Turn:",
+                    "Remain Voucher: ${voucher.createdCounts}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Spacer(),
-                  Text("Remain Voucher: ${voucher.maxCounts}"),
                 ],
               ),
               SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(Icons.calendar_today, color: Colors.blue),
+                  Icon(Icons.calendar_today, color: Colors.orange),
                   SizedBox(width: 8),
                   Text(
-                    "Exp date",
+                    "Exp date: ${voucher.expiredAt.toIso8601String().substring(0,10)}",
                     style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Spacer(),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue.shade100,
-                    ),
-                    onPressed: () {},
-                    child: Text("See others"),
                   ),
                 ],
               ),
               SizedBox(height: 16),
-
               // Related Voucher Section
               Text(
                 'Related Voucher',
@@ -176,7 +165,9 @@ class VoucherDetailScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("Starbucks Meeting"),
+                            child: Text(
+                              "Starbucks Meeting",
+                            ),
                           ),
                         ],
                       ),
@@ -217,16 +208,23 @@ class VoucherDetailScreen extends StatelessWidget {
               SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GameButtonsScreen( voucher: voucher,),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: Colors.orangeAccent,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Choose Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 14),),
+                      Text("Play Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14),),
                       SizedBox(width: 8),
-                      Icon(Icons.arrow_forward,color: Colors.white,size: 16,),
+                      Icon(Icons.arrow_forward,color: Colors.black,size: 16,),
                     ],
                   ),
                 ),

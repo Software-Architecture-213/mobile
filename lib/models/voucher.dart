@@ -9,8 +9,8 @@ class Voucher {
   DateTime expiredAt; // Ngày hết hạn
   String status; // Trạng thái voucher
   String? promotionId; // Liên kết tới Promotion
-  int maxCounts; // Số voucher tối đa từ sự kiện
-  int createdCounts; // Số voucher đã phát hành
+  int? maxCounts; // Số voucher tối đa từ sự kiện
+  int? createdCounts; // Số voucher đã phát hành
   DateTime createdAt; // Ngày tạo voucher
   DateTime ?updatedAt; // Ngày cập nhật voucher
 
@@ -25,8 +25,8 @@ class Voucher {
     required this.expiredAt,
     required this.status,
     this.promotionId,
-    this.maxCounts = 1,
-    this.createdCounts = 0,
+    this.maxCounts,
+    this.createdCounts,
     required this.createdAt,
     this.updatedAt,
   });

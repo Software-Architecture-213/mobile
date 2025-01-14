@@ -206,4 +206,83 @@ class AuthService{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('accessToken');
   }
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('accessToken');
+    await prefs.remove('refreshToken');
+  }
+  // refresh token
+  Future<ApiResponse> refreshToken() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final refreshToken = prefs.getString('refreshToken');
+
+      if (refreshToken == null) {
+        throw Exception('Refresh token not found');
+      }
+      final response = await dio.post(
+        '/auth/refresh-token',
+        data: {
+          'refreshToken': refreshToken,
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final accessToken = response.data['accessToken'];
+        final refreshToken = response.data['refreshToken'];
+
+        // Save tokens to SharedPreferences
+        await prefs.setString('accessToken', accessToken);
+        await prefs.setString('refreshToken', refreshToken);
+        return ApiResponse(
+          success: true,
+          message: 'Token refreshed',
+          data: {
+            'accessToken': accessToken,
+            'refreshToken': refreshToken,
+          },
+          statusCode: response.statusCode ?? 200,
+        );
+      } else {
+        return ApiResponse(
+          success: false,
+          message: 'Token refresh failed: ${response.data}',
+          statusCode: response.statusCode ?? 400,
+        );
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        return ApiResponse(
+          success: false,
+          message: 'Token refresh failed: ${e.response!.data}',
+          statusCode: e.response!.statusCode ?? 400,
+        );
+      }
+      return ApiResponse(
+        success: false,
+        message: 'Connection error: $e',
+        statusCode: 500,
+      );
+    }
+  }
+  //get userInfo by email
+  Future<UserResponse> getUserInfoByEmail(String email) async {
+    try {
+      final response = await dio.get(
+        '/users/by-email',
+        queryParameters: {'email': email},
+      );
+
+      if (response.statusCode == 200) {
+        return UserResponse.fromJson(response.data);
+      } else {
+        throw Exception('Failed to fetch user info: ${response.data}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null) {
+        throw Exception('Failed to fetch user info: ${e.response!.data}');
+      }
+      throw Exception('Connection error: $e');
+    }
+  }
 }

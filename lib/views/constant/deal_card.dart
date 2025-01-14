@@ -39,16 +39,16 @@ Widget dealCard(BuildContext context,String imageUrl, String title, String descr
               ),
             ),
           ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orangeAccent,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-            onPressed: () {},
-            child: Text(buttonText,style: TextStyle(color: Colors.black),),
-          ),
+          // ElevatedButton(
+          //   style: ElevatedButton.styleFrom(
+          //     backgroundColor: Colors.orangeAccent,
+          //     shape: RoundedRectangleBorder(
+          //       borderRadius: BorderRadius.circular(16),
+          //     ),
+          //   ),
+          //   onPressed: () {},
+          //   child: Text(buttonText,style: TextStyle(color: Colors.black),),
+          // ),
           SizedBox(
             width: 8,
           )

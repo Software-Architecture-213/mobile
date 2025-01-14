@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
-void showPuzzleBottomSheet(BuildContext context, int index) {
+import 'package:mobile/views/constant/send_dialog.dart';
+import '../../models/item_user.dart';
+void showShareBottomSheet(BuildContext context, ItemUser item) {
   showModalBottomSheet(
     context: context,
     builder: (context) {
@@ -41,8 +42,7 @@ void showPuzzleBottomSheet(BuildContext context, int index) {
                 minimumSize: Size(double.infinity, 48),
               ),
               onPressed: () {
-                // Handle "Share With My Friend" logic
-                showEmailDialog(context);
+                showSendItemDialog(context, item);
               },
               child: Text('Share With My Friend',style: TextStyle(color: Colors.black),),
             ),
@@ -52,56 +52,4 @@ void showPuzzleBottomSheet(BuildContext context, int index) {
     },
   );
 }
-void showEmailDialog(BuildContext context) {
-  final TextEditingController emailController = TextEditingController();
 
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: Text('Share with Friends'),
-        content: TextField(
-          controller: emailController,
-          decoration: InputDecoration(hintText: 'Email'),
-        ),
-        actions: [
-          ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text('Cancel',style: TextStyle(color: Colors.red),),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orangeAccent,
-            ),
-            onPressed: () async {
-              String email = emailController.text.trim();
-              final Uri emailUri = Uri(
-                scheme: 'mailto',
-                path: email,
-                query: 'subject=${Uri.encodeQueryComponent('Subject')}&body=${Uri.encodeQueryComponent('send you a gift')}', // Properly encode the subject and body
-              );
-              if (await canLaunchUrl(emailUri)) {
-                await launchUrl(emailUri);
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.of(context).pop(); // Close the bottom sheet
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Email sent successfully')),
-                );
-              } else {
-                Navigator.of(context).pop(); // Close the dialog
-                Navigator.of(context).pop(); // Close the bottom sheet
-                // Handle the error when the email cannot be sent
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Could not send email')),
-                );
-              }
-            },
-            child: Text('Send',style: TextStyle(color: Colors.black),),
-          ),
-        ],
-      );
-    },
-  );
-}

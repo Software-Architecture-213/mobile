@@ -5,6 +5,7 @@ import 'package:mobile/viewmodels/game_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 import '../../viewmodels/auth_viewmodel.dart';
+import '../constant/bottom_sheet.dart';
 
 class MyItemScreen extends StatefulWidget {
   const MyItemScreen({super.key});
@@ -53,75 +54,80 @@ class _MyItemScreenState extends State<MyItemScreen> {
                       itemCount: gameViewModel.items.length,
                       itemBuilder: (context, index) {
                         ItemUser item = gameViewModel.items[index];
-                        return Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                // Image
-                                if (item.item?.imageUrl != null)
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8),
-                                    child: Image.network(
-                                      item.item!.imageUrl!,
-                                      width: 100,
-                                      height: 100,
-                                      fit: BoxFit.cover,
+                        return GestureDetector(
+                          onTap: () {
+                            showShareBottomSheet(context, item);
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                children: [
+                                  // Image
+                                  if (item.item?.imageUrl != null)
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(8),
+                                      child: Image.network(
+                                        item.item!.imageUrl!,
+                                        width: 100,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  const SizedBox(width: 12),
+                                  // Text content
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        if (item.item?.name != null)
+                                          Text(
+                                            "${item.item?.name} ",
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                        if (item.item?.description != null)
+                                          Text(
+                                            item.item!.description.toString(),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        const SizedBox(height: 4),
+                                        // Piece name
+                                        if (item.item?.tradable != null)
+                                          Text(
+                                            "Tradable: ${item.item!.tradable}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                        const SizedBox(height: 4),
+                                        // Time
+                                        if (item.item?.rarity != null)
+                                          Text(
+                                            "Quantity: ${item.quantity}",
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color: Colors.black87,
+                                            ),
+                                          ),
+                                      ],
                                     ),
                                   ),
-                                const SizedBox(width: 12),
-                                // Text content
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      if (item.item?.name != null)
-                                        Text(
-                                          "${item.item?.name} ",
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      if (item.item?.description != null)
-                                        Text(
-                                          item.item!.description.toString(),
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                      const SizedBox(height: 4),
-                                      // Piece name
-                                      if (item.item?.tradable != null)
-                                        Text(
-                                          "Tradable: ${item.item!.tradable}",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                      const SizedBox(height: 4),
-                                      // Time
-                                      if (item.item?.rarity != null)
-                                        Text(
-                                          "Rarity: ${item.item!.rarity}",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 12,
-                                            color: Colors.black87,
-                                          ),
-                                        ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         );

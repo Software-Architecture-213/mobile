@@ -6,7 +6,7 @@ Widget buildInviteCard() {
     width: double.infinity,
     padding: EdgeInsets.all(8),
     decoration: BoxDecoration(
-      color: Colors.orangeAccent[100],
+      color: Color(0xFFFAE0BD),
       borderRadius: BorderRadius.circular(12),
     ),
     child: Row(
