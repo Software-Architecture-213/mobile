@@ -5,7 +5,7 @@ class Game {
   String? imageUrl; // Hình ảnh đại diện trò chơi
   String? description; // Giới thiệu trò chơi
   String? guideline; // Hướng dẫn trò chơi
-  bool allowItemExchange; // Cho phép trao đổi vật phẩm hay không
+  bool? allowItemExchange; // Cho phép trao đổi vật phẩm hay không
   String? difficulty; // Mức độ khó của trò chơi
   String? promotionId; // Liên kết với Promotion
   DateTime createdAt; // Ngày tạo trò chơi
@@ -18,7 +18,7 @@ class Game {
     this.imageUrl,
     this.description,
     this.guideline,
-    this.allowItemExchange = false,
+    this.allowItemExchange,
     this.difficulty,
     this.promotionId,
     required this.createdAt,

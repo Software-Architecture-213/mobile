@@ -89,4 +89,16 @@ class GameViewModel extends ChangeNotifier {
     await _itemService.createItemTransaction(senderId,receiverId, itemId, quantity, status);
     notifyListeners();
   }
+  //get game by promotion id
+  Future<List<Game>> getAllGamesByPromotionId(String promotionId) async {
+    _games =  await _gameService.getAllGamesByPromotionId(promotionId);
+    notifyListeners();
+    return _games;
+
+  }
+  //update item user
+  Future<void> updateItemUserByUserIdAndListItemId(String userId, List<String> items) async {
+    await _itemService.updateItemUserByUserIdAndListItemId(userId, items);
+    notifyListeners();
+  }
 }

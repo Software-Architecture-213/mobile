@@ -75,6 +75,16 @@ class _QuizGameAppState extends State<QuizGameApp> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.orangeAccent,
+        appBar: AppBar(
+          backgroundColor: Colors.orangeAccent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Stack(
           children: [
             Column(

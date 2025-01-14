@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/voucher.dart';
+import 'package:mobile/views/constant/game_screen.dart';
 
 class VoucherDetailScreen extends StatelessWidget {
   final Voucher voucher;
@@ -126,7 +127,7 @@ class VoucherDetailScreen extends StatelessWidget {
                   Icon(Icons.videogame_asset, color: Colors.orange),
                   SizedBox(width: 8),
                   Text(
-                    "Remain Voucher: ${voucher.maxCounts}",
+                    "Remain Voucher: ${voucher.createdCounts}",
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -164,7 +165,9 @@ class VoucherDetailScreen extends StatelessWidget {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text("Starbucks Meeting"),
+                            child: Text(
+                              "Starbucks Meeting",
+                            ),
                           ),
                         ],
                       ),
@@ -205,14 +208,21 @@ class VoucherDetailScreen extends StatelessWidget {
               SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => GameButtonsScreen( voucher: voucher,),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orangeAccent,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text("Collect Voucher",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14),),
+                      Text("Play Game",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 14),),
                       SizedBox(width: 8),
                       Icon(Icons.arrow_forward,color: Colors.black,size: 16,),
                     ],

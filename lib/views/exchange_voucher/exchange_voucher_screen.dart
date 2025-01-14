@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/response/user_response.dart';
+import 'package:mobile/viewmodels/game_viewmodel.dart';
 import 'package:provider/provider.dart';
 import '../../models/promotion.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/brand_viewmodel.dart';
+import '../home/home_screen.dart';
 
 class ExchangeVoucherScreen extends StatefulWidget {
   final Promotion promotion;
@@ -97,11 +99,24 @@ class _ExchangeVoucherScreenState extends State<ExchangeVoucherScreen> {
               SizedBox(height: 40),
               Center(
                 child: ElevatedButton(
-                  onPressed: canExchangeVoucher ? () {
+                  onPressed: canExchangeVoucher ? () async {
                         String? voucherId = brandViewModel.conversionRule!.voucher.id;
-                        List<String> itemIds = brandViewModel.items.map((item) => item.id).toList();
-                        Provider.of<BrandViewModel>(context, listen: false).createUserVoucher(voucherId!);
-                        Provider.of<BrandViewModel>(context, listen: false).deleteItemUserByUserIdAndListItemId(user!.userId, itemIds);
+                        List<String> itemIds = brandViewModel.items.map((item) => item.item!.id).toList();
+                        await Provider.of<BrandViewModel>(context, listen: false).createUserVoucher(voucherId!);
+                        await Provider.of<GameViewModel>(context, listen: false).updateItemUserByUserIdAndListItemId(user!.userId, itemIds);
+
+                        // Show Snackbar
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Exchange successful!'),
+                          ),
+                        );
+
+                        // Navigate to HomeScreen
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+
                   } : null,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orangeAccent,

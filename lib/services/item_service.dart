@@ -139,5 +139,14 @@ class ItemService{
       throw Exception('Failed to check and update item user: $e');
     }
   }
-
+  Future<void> updateItemUserByUserIdAndListItemId(String userId, List<String> items)  async {
+    try {
+      await dio.patch('/itemUsers/user/$userId/items',
+          data: {
+            'items': items,
+          });
+    } catch (e) {
+      throw Exception('Failed to update item user');
+    }
+  }
 }
