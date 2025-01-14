@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/quiz_game.dart';
+import 'package:mobile/views/voucher_detail/voucher_detail_screen.dart';
 import 'package:provider/provider.dart';
 import '../../models/promotion.dart';
 import '../../viewmodels/brand_viewmodel.dart';
@@ -171,39 +172,48 @@ class _PromotionDetailScreenState extends State<PromotionDetailScreen>{
                 'Related Vouchers',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
-
               SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: widget.promotion.vouchers!.map((voucher) {
-                    return Container(
-                      width: 200,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Card(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Image.network(
-                                voucher.imageUrl!,
-                                width: 200,
-                                height: 100,
-                                fit: BoxFit.cover,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  voucher.description ?? '',
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VoucherDetailScreen(voucher: voucher),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        width: 200,
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: Card(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.network(
+                                  voucher.imageUrl!,
+                                  width: 200,
+                                  height: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text("Status: " + voucher.type),
-                              ),
-                            ],
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    voucher.description ?? '',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Status: " + voucher.type),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),

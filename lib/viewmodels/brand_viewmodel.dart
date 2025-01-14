@@ -6,6 +6,7 @@ import 'package:mobile/services/promotion_service.dart';
 import 'package:mobile/services/voucher_service.dart';
 import '../models/brand.dart';
 import '../models/promotion.dart';
+import '../models/response/favourite_promotion_response.dart';
 import '../models/response/item_user_response.dart';
 import '../services/brand_service.dart';
 import '../services/convention_rule_service.dart';
@@ -24,6 +25,7 @@ class BrandViewModel extends ChangeNotifier {
   List<Promotion> _promotions = [];
   List<Promotion> get promotions => _promotions;
 
+  FavouritePromotion? favouritePromotions;
   List<Voucher> _vouchers = [];
   List<Voucher> get vouchers => _vouchers;
 
@@ -106,6 +108,12 @@ class BrandViewModel extends ChangeNotifier {
   //delete item user
   Future<void> deleteItemUserByUserIdAndListItemId(String userId, List<String> items) async {
     await _itemService.deleteItemUserByUserIdAndListItemId(userId, items);
+    notifyListeners();
+  }
+
+  //get favourite promotions by user id
+  Future<void> getFavouritePromotionsByUser() async {
+    favouritePromotions = await _promotionService.getFavouritePromotionsByUser();
     notifyListeners();
   }
 }

@@ -4,7 +4,22 @@ import 'package:provider/provider.dart';
 import '../constant/deal_card.dart';
 import '../constant/menu_item.dart';
 
-class FavouriteScreen extends StatelessWidget {
+class FavouriteScreen extends StatefulWidget {
+
+  @override
+  State<StatefulWidget> createState() => _FavouriteScreenState();
+}
+
+class _FavouriteScreenState extends State<FavouriteScreen>{
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchFavourites();
+  }
+  Future<void> _fetchFavourites() async {
+    await Provider.of<BrandViewModel>(context, listen: false).getFavouritePromotionsByUser();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,11 +78,14 @@ class FavouriteScreen extends StatelessWidget {
                     if (brandViewModel.isLoadingPromotion) {
                       return Center(child: CircularProgressIndicator());
                     }
+                    if (brandViewModel.favouritePromotions == null || brandViewModel.favouritePromotions!.promotions.isEmpty) {
+                      return Center(child: Text("No promotions available"));
+                    }
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: brandViewModel.promotions.map((promotion) {
+                        children: brandViewModel.favouritePromotions!.promotions.map((promotion) {
                           return Padding(
                             padding: const EdgeInsets.only(right: 8.0),
                             child: dealCard(
@@ -89,6 +107,4 @@ class FavouriteScreen extends StatelessWidget {
       ),
     );
   }
-
-
 }

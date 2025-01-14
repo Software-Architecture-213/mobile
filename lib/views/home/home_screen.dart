@@ -170,7 +170,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-
                   SizedBox(height: 10),
                   buildSectionHeader(context,'Vouchers', 'See all', 'voucher'),
                   SizedBox(height: 10),
@@ -207,8 +206,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
-                  SizedBox(height: 20),
-                  buildInviteCard(),
                   SizedBox(height: 10),
                   buildSectionHeader(context,'Brands', 'See all', 'brand'),
                   SizedBox(height: 10),
@@ -235,6 +232,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
+                  SizedBox(height: 20),
+                  buildInviteCard(),
                 ],
               ),
             ),
