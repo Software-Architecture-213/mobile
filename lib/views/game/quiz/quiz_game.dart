@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/models/response/user_response.dart';
+import 'package:mobile/models/user_game.dart';
+import 'package:mobile/viewmodels/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 
@@ -21,11 +24,19 @@ class _QuizGameAppState extends State<QuizGameApp> {
   String? selectedAnswer;
   bool showResult = false;
   int correctAnswersCount = 0;
+  UserResponse? user;
+  UserGame? userGame;
   @override
   void initState() {
     super.initState();
-    Provider.of<GameViewModel>(context, listen: false).getQuizByGameId(widget.gameId);
+    _initUserGame();
     startTimer();
+  }
+  void _initUserGame() async {
+    user =  Provider.of<AuthViewModel>(context, listen: false).user!;
+    Provider.of<GameViewModel>(context, listen: false).getUserGameByUserId(user!.userId, widget.gameId);
+    userGame = Provider.of<GameViewModel>(context, listen: false).userGame;
+    Provider.of<GameViewModel>(context, listen: false).getQuizByGameId(widget.gameId);
   }
 
   void startTimer() {
@@ -84,6 +95,37 @@ class _QuizGameAppState extends State<QuizGameApp> {
               Navigator.pop(context);
             },
           ),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 238, 240, 243),
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.flash_on,
+                      color: Colors.orange,
+                    ),
+                       Text(
+                    userGame?.remainingTurns != null ? userGame!.remainingTurns.toString() : "10",
+                    style:  TextStyle(
+                      fontSize: 16,
+                      color: Colors.orange,
+                      fontWeight: FontWeight.bold,
+                    ),
+                       ),
+                    SizedBox(
+                      width: 5,
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
         body: Stack(
           children: [

@@ -37,9 +37,9 @@ void showSendItemDialog(BuildContext context, ItemUser item) {
                 UserResponse? userReceiver = Provider.of<AuthViewModel>(context, listen: false).userReceiver;
                 UserResponse user = Provider.of<AuthViewModel>(context, listen: false).user!;
                 if (userReceiver != null) {
-                  await Provider.of<GameViewModel>(context, listen: false).checkAndUpdate(userReceiver.userId, item.item!.id, item.gameId!, 1);
-                  await Provider.of<GameViewModel>(context, listen: false).checkAndUpdate(user.userId, item.item!.id, item.gameId!, -1);
-                  await Provider.of<GameViewModel>(context, listen: false).createItemTransaction(user.userId, userReceiver.userId, item.item!.id, 1, "accepted");
+                  Provider.of<GameViewModel>(context, listen: false).checkAndUpdate(userReceiver.userId, item.item!.id, item.gameId!, 1);
+                  Provider.of<GameViewModel>(context, listen: false).checkAndUpdate(user.userId, item.item!.id, item.gameId!, -1);
+                  Provider.of<GameViewModel>(context, listen: false).createItemTransaction(user.userId, userReceiver.userId, item.item!.id, 1, "accepted");
 
                   // Show Snackbar
                   ScaffoldMessenger.of(context).showSnackBar(

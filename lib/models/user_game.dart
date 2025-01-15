@@ -2,17 +2,17 @@ class UserGame {
   String userId; // ID of the user
   String gameId; // ID of the game
   int? score; // Score of the user in the game
-  int remainingTurns; // Remaining turns for the user
-  int earnedTurns; // Earned turns for the user
+  int? remainingTurns; // Remaining turns for the user
+  int? earnedTurns; // Earned turns for the user
   DateTime createdAt; // Creation date
   DateTime? updatedAt; // Last update date
 
   UserGame({
     required this.userId,
     required this.gameId,
-    this.score = 0,
-    this.remainingTurns = 10,
-    this.earnedTurns = 0,
+    this.score ,
+    this.remainingTurns,
+    this.earnedTurns ,
     required this.createdAt,
     this.updatedAt,
   });
@@ -24,8 +24,8 @@ class UserGame {
       score: json['score'] ?? 0,
       remainingTurns: json['remainingTurns'] ?? 10,
       earnedTurns: json['earnedTurns'] ?? 0,
-      createdAt: DateTime.parse(json['createAt']),
-      updatedAt: json['updateAt'] != null ? DateTime.parse(json['updateAt']) : null,
+      createdAt: DateTime.parse(json['createdAt']),
+      updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
     );
   }
 

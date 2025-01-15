@@ -71,14 +71,6 @@ class PromotionScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 8),
-                        Text(
-                          "Tặng thêm đến 900 Xu",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
                       ],
                     ),
                   ),
