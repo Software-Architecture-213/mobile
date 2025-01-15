@@ -4,6 +4,7 @@ import 'package:mobile/models/item_user.dart';
 import '../models/game.dart';
 import '../models/item.dart';
 import '../models/quiz_game.dart';
+import '../models/user_game.dart';
 import '../services/game_service.dart';
 import '../services/item_service.dart';
 
@@ -30,6 +31,8 @@ class GameViewModel extends ChangeNotifier {
 
   List<ItemTransaction> _itemTransactions = [];
   List<ItemTransaction> get itemTransactions => _itemTransactions;
+
+  UserGame? userGame;
 
   //Get all games
   Future<void> getAllGames() async {
@@ -70,8 +73,8 @@ class GameViewModel extends ChangeNotifier {
       // Handle error
     }
   }
-  Future<void> getUserGameByUserId(String userId) async {
-    await _gameService.getUserGameByUserId(userId);
+  Future<void> getUserGameByUserId(String userId, String gameId) async {
+    userGame = await _gameService.getUserGameByUserId(userId,gameId);
     notifyListeners();
   }
   Future<void> getItemTransactionsByUserId(String userId) async {
@@ -101,4 +104,5 @@ class GameViewModel extends ChangeNotifier {
     await _itemService.updateItemUserByUserIdAndListItemId(userId, items);
     notifyListeners();
   }
+
 }

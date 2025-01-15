@@ -56,16 +56,16 @@ class GameService{
       throw Exception('Failed to load quiz game by game id: $e');
     }
   }
-  Future<UserGame> getUserGameByUserId(String userId) async {
+  Future<UserGame> getUserGameByUserId(String userId,String gameId) async {
     try {
-      final response = await dio.get('/userGames/$userId');
+      final response = await dio.get('/userGames/$userId/$gameId');
       if (response.statusCode == 200) {
-        return UserGame.fromJson(response.data);
+        return UserGame.fromJson(response.data['data']);
       } else {
-        throw Exception('Failed to load user game by user id');
+        throw Exception('Failed to load user game by user id and game id');
       }
     } catch (e) {
-      throw Exception('Failed to load user game by user id: $e');
+      throw Exception('Failed to load user game by user id and game id: $e');
     }
   }
 }

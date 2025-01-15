@@ -35,18 +35,32 @@ class _ExchangeVoucherScreenState extends State<ExchangeVoucherScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            'Exchange Voucher',
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-          ),
+        title: Text(
+          'Exchange Voucher',
+          style: TextStyle( fontWeight: FontWeight.bold),
         ),
       ),
       body: Consumer<BrandViewModel>(
         builder: (context, brandViewModel, child) {
           final conversionRule = brandViewModel.conversionRule;
           if (conversionRule == null) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/sorry.png', // Replace with your image path
+                    width: 200,
+                    height: 200,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Currently unable to exchange voucher',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            );
           }
           return Column(
             crossAxisAlignment: CrossAxisAlignment.center,

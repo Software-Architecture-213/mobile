@@ -28,7 +28,7 @@ class _TransactionHistoryState extends State<TransactionHistory> {
               Navigator.pop(context);
             },
             icon:Icon(Icons.arrow_back_outlined), color: Colors.black),
-        title: const Text('My Gift History', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+        title: const Text('Transaction History', style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
         backgroundColor: Color(0xFFF4D7AB),
       ),
       body: Consumer<GameViewModel>(
